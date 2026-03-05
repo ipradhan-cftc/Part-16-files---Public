@@ -1,0 +1,3401 @@
+Guidebook for Part 1 7.00 
+Reports  by Reporting Markets,  
+Futures  Commission Merchants,  Clearing  
+Members, and Foreign Brokers 
+ 
+Version 2.0 
+ 
+ 
+December  17, 2024  
+ CFTC  
+Commodity Futures Trading 
+Commission  
+ 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+  Page 2 of 113 
+ 
+Document History  
+Revisions  
+Date  Version  Description  Author  
+10/06/2022  1.0 Initial release  CFTC  
+03/15/2023  1.1 Deleted  price and updated Part16 to Part17 on page 1.  
+Data Dictionary Field name changes: #21 Alpha Strike, 
+#32 Long Position, #33 Short Position, #34 Contracts 
+Bought: definition update, #35 Contracts Sold: same 
+changes as previous, #36 EFPs Bought, #37 EFPs 
+Sold Tag, #44 - # 47 if no options/futures are made as 
+described in the description, then populate with "0". 
+Added fields after #47: Long Futures Assigned, Short 
+Futures Assigned.  Added fields after #48: Long 
+Transfers Sent, Long Transfers Received.  Added fields 
+after #49:  Short Transfers Sent, Short Transfers 
+Received.  Updated description in #48 and #49 to not 
+include give- ups.  3.9.1 table updated with FXML path 
+for Alpha Strike to /PosRpt/Instrmt@AlphaStrk.  CFTC  
+03/27/2023  1.2 Changed the Date format for Listing Date from 
+‘YYYYMMDD’ to ‘YYYY -MM-DD’. Changed the Data 
+Element name from Earliest Exercise Date to First 
+Exercise Date.  CFTC  
+3/31/2023  1.3 Add Long and Short positions sent/received. Changed 
+Tag descriptions. Changed the conditional statements 
+and added audit details.  CFTC  
+4/18/2023  1.4 Corrected format issues. Added, removed or changed 
+wording on certain sentences. Fixed MatTm  valid value 
+by removing the date part. Removed paragraphs which 
+are irrelevant to part 17.  CFTC  
+5/26/2023  1.5 Made description changes to data elements 
+Contracts Bought and Sold. Made a change to 
+data element name for item numbers 24 and 25.  CFTC  
+5/30/2023  1.6 Updated Alpha Strike Description.  CFTC  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 3 of 113 
+03/18/2024  1.7 Added Unique Instrument Code . Added Unique 
+Instrument Code to all examples.  Made a minor 
+change to Report ID Description.  Added more 
+clariﬁcation to the tag description.  The length 
+increased to 50 for Settlement Instrument – 
+Product Code  and Changed Unique Instrument 
+Code  to conditional tag.  CFTC  
+3/28/2024  1.8 Made changes to validations  , data dictionary data 
+types  (no ﬁelds added)  and  key section 3.10.1  CFTC  
+4/16/2024  1.9 Updated datatypes.  Small wording  and page 
+numbering  corrections . CFTC  
+12/17/2024  2.0 Updated AltID path and corrected ﬁle name 
+convention. Moved  validations 9 and 10 to the end 
+of validation table in appendix B.  Added 3 
+additional validations and deleted validations #2, 
+12 thru 20 . 
+Updated Validations with FIXML paths.Updated 
+and added new validations.  Corrected the FIXML 
+path in the examples.  Removed Unde rlying ID and 
+MMY from composite key. Settlement Instrument 
+– Product Code  and Settlement Instrument - 
+Contract Date  changed from conditional to 
+optional. Product Code ,  Product Type , Instrument 
+Code , Contract Date , Long and Short quantity 
+were changed from mandatory to 
+conditional. Account ID length is changed to 12 
+from 20. Changed Data Element names to match 
+PRF (Product Reference File) Guidebook (provided 
+to DCMs).  CFTC  
+ 
+   
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 4 of 113 
+ 
+Contents  
+1. Introduction  ......................................................................................................... 6 
+1.1 Large  Trader Reporting  Program  ................................ ................................ .............................  6 
+1.1.1 Large Trader  Data ................................ ................................ ................................ ................  6 
+References  ................................ ................................ ................................ ................................ ...... 7 
+2. Data Dictionary  ................................ ................................ ................................ ...........................  8 
+2.1 Large Trader Position Reports  ................................ ................................ ................................  8 
+3 Technical Requirements .................................................................................... 24 
+ Reporting Schedules  ................................ ................................ ................................ ....... 24 
+ Electronic Data Submission Procedure  ................................ ................................ ........  25 
+ Format the Data for Transmission  ................................ ................................ .................  25 
+3.3.1   Reserved Characters  ................................ ................................ ...............................  25 
+3.3.2  Special Characters  ................................ ................................ ................................ ........  26 
+ File Naming Convention  ................................ ................................ ................................ .. 26 
+ Aggregate the Records  ................................ ................................ ................................ ... 28 
+ Compress the File(s)  ................................ ................................ ................................ ....... 30 
+ Connect to CFTC with Secure FTP  ................................ ................................ ................  30 
+ Transmit the File(s)  ................................ ................................ ................................ ..........  30 
+ Data Integrity ................................ ................................ ................................ ....................  31 
+ Data Validation and Error Handling  ................................ ................................ ...............  32 
+3.10.1  Large Trader  FIXML  Reference ID ................................ ................................ ..................  32 
+ Error and Omission Correction Handling ................................ ................................ ..... 34 
+3.11.1 Initial  Submission  — New ................................ ................................ ................................ . 36 
+3.11.2 Correct  One or More  Errors  — Change ................................ ................................ ...........  38 
+1.1.2  The Entire  Report  Is Wrong  — Delete  ................................ ................................ ...........  43 
+Appendix A:  SFTP Account Registration  ........................................................... 48 
+Appendix  B: Data  Validation  Rules  for Large Trader  Position  Report  (LTPOS)  ...........................  55 
+Appendix  C: Annotated Examples  and Working  Samples  ................................ ...........................  78 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 5 of 113 
+C-1: Large Trader ................................ ................................ ................................ ........................  78 
+Appendix  D: 80-Byte Format  Comparison  to FIXML  ................................ ................................ . 100 
+Appendix  E Legacy  File Format  ................................ ................................ ................................  105 
+Appendix  F: Map Part 17 Large Trader  Data  to FIXML  ................................ .............................  110 
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 6 of 113 
+1. Introduction  
+1.1 Large  Trader Reporting Program 
+The CFTC  operates  a comprehensive  system  of collecting  information  on market  
+participants to  support its  market  surveillance  program  and other  programs  throughout the 
+Commission.  Under  regulations  set out in Part 17 of the CFTC’s regulations, promulgated 
+under the Commodity Exchange Act (CEA), the Commission collects reports identifying 
+volume threshold, omnibus, and special accounts as well as position information from 
+clearing members, Futures Commission Merchants ( FCMs), foreign brokers, and certain 
+reporting markets.  
+To ensure  privacy  of the information  provided, the CFTC  has assigned  conﬁdential  reporting   
+numbers  to reporting ﬁrms and traders. The Commission is prohibited under Section 8 of 
+the CEA, 7 USC 12, from publicly disclosing any person’s positions.   
+1.1.1 Large  Trader  Data 
+Under the Commission’s Large Trader Reporting System, clearing members, FCMs, 
+foreign brokers, and certain reporting markets (collectively called “reporting ﬁrms”) 
+ﬁle daily reports with the Commission under Part 17 of the CFTC’s regulations, 17 CFR Part 17. The reports show futures and option positions  of traders  with positions  at or 
+above  speciﬁc reporting  levels  as set by the Commission. Current  reporting  levels  are 
+found in CFTC  Regulation  15.03(b),  17 CFR 15.03(b). (For  more  information, see 
+https://www.cftc.gov/IndustryOversight/MarketSurveillance/LargeTraderReportingProgram/index.htm  
+) 
+If, at the daily  market  close,  a reporting  ﬁrm has a trader  with a reportable  position  
+according  to CFTC regulations 15.00(p)(1)(i ) and (ii), the ﬁrm reports that trader’s 
+entire position in all futures and options expiration months in that commodity, 
+regardless of size.  
+Because traders frequently carry futures positions through more than one broker and control or have a ﬁnancial interest  in more  than one account, the Commission  
+routinely  collects  information  that enables its staﬀ to aggregate related accounts.  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 7 of 113 
+Speciﬁcally, reporting ﬁrms must ﬁle a CFTC Form 102A: Identiﬁcation of “Special 
+Accounts” to identify each new account that has a reportable position  
+The CFTC  uses various  means  to ensure  the accuracy of its large  trader  data.  Where 
+the CFTC identiﬁes discrepancies in data submitted pursuant to regulation 17.00(a), 
+an inquiry is made to the appropriate exchange and/or reporting ﬁrm.  
+The term  “legacy”  is used  in the guidebook to reference  the old 80- byte format 
+(legacy).  
+Generic  Specific  
+Legacy  The Old 80- byte report format  
+ 
+See Appendix  D: 80 Byte  Comparison  to FIXML  for a comparison  between the 80 byte  
+and FIXML formats.  
+See Appendix  E:Legacy File Format  for details  about the 80 byte  format.  
+       See Appendix  F:Map Part 17 Large  Trader  Data  to FIXML  to see how  the 80 byte  data  is mapped to FIXML  
+ References 
+Document Name  Location  
+CFTC  regulations  are found  at Title  17 
+Chapter I of the Code  of Federal Regulations  
+(CFR) https://www.ecfr.gov/current/title -17/chapter -I. 
+  
+    
+ 
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+  Page 8 of 113 
+2. Data Dictionary 
+ 
+2.1 Large Trader Position Reports 
+In the table below ‘M’ equals Mandatory, ‘C’ equals conditional and ‘O’ equals optional. The ‘Use’ column describes condition s. 
+ 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+1. Total Message 
+Count  M The total number of reports included in the ﬁle.  Int (value can be no larger 
+than 2,147,483,647)  
+ FIXML/Batch@TotMsg=[Total Reports Count]  
+Batch Total Messages (50001)   
+2. FIXML Message 
+Type  M FIXML report type  String/(varchar 2)  
+ FIXML/Batch/Hdr@MsgTyp=AP  
+MessageType (35)   
+3. Sender ID  M The CFTC issued reporting ﬁrm Alpha Code 
+from the reporting ﬁrm sending the report.   String/(varchar 20)  
+ FIXML/Batch/Hdr@SID=[CFTC Rpt Firm ID]  
+Sender Comp ID (49)   
+4. To ID  M Indicates the report was submitted to the CFTC  String/(varchar 4)  
+ FIXML/Batch/Hdr@TID=CFTC  
+Target Comp ID (56)   
+5. Message Transmit 
+Datetime   The date and time the ﬁle was created.  Local time with UTC oﬀset  FIXML/Batch/Hdr@Snt=[ YYYY -MM -
+DDThh:mm:ss[+| -]hh:mm]  
+Sending Time (52)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 9 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+6. Report ID  M A unique identiﬁer assigned to each position 
+report  (equivalent to a r ecord ID). String/(varchar 30)  
+ FIXML/Batch/PosRpt@RptID =[Unique Rpt ID] 
+Report ID (721)   
+7. Record Type 
+(Action)  M Indicates the action that triggered the position 
+report.  1 = New - used to 
+increment the overall 
+transaction quantity  
+2 = Change - used to 
+override the overall 
+transaction quantity or 
+speciﬁc add messages 
+based on the FIXML 
+Reference ID (Primary Key)  
+3 = Delete - The FIXML 
+Reference ID (Primary Key) 
+is used to completely back -
+out (Delete) the 
+transaction.  
+/(tinyint 1)  FIXML/Batch/PosRpt@Actn=[1 | 2 | 3]  
+Position Report Action (2364)   
+8. Report Date  M The business date of the information being 
+reported.      YYYY -MM- DD FIXML/Batch/PosRpt@BizDt=[YYYY -MM- DD] 
+Clearing Business Date (715)  Report Date  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 10 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+9. Reporting Firm ID  M CFTC -assigned identiﬁer for the reporting ﬁrm.  String/(varchar 3)  
+Src: 
+M=CFTC Reporting Firm 
+Identiﬁer  
+R: 
+116 = Reporting entity  FIXML/Batch/PosRpt/Pty@ID =[Rpt Firm ID]  
+Party ID (448)  
+FIXML/Batch/PosRpt/Pty@Src=M (CFTC Reporting 
+Firm Identiﬁer)  
+Party ID Source (447)  
+FIXML/Batch/PosRpt/Pty@R =116 (Reporting Entity) 
+Party Role (452)  Reporting Firm  
+10. Special Account 
+Controller LEI  C The Legal Entity Identiﬁer issued to the account 
+controller. Conditional on Large Trader 
+obtaining  LEI. 
+ ID = Large Trader LEI Max 
+Value Length = 20  
+Src: 
+N = Legal Entity Identiﬁer  
+R: 
+89 = (Large Position 
+Reporting Account  FIXML/Batch/PosRpt/Pty@ID= [Large Trader LEI] 
+Party ID (448)  
+FIXML/Batch/PosRpt/Pty@Src=N (Legal Entity 
+Identiﬁer)  
+Party ID Source (447)  
+FIXML/Batch/PosRpt/Pty@R =89 (Large Position 
+Reporting Account)  
+Party Role (452)   
+11. Account ID  M A unique account identiﬁer, assigned by the 
+reporting ﬁrm to each special account.  
+Assignment of the account number is subject to 
+the provisions of 17 CFR § 17.00(b) and 
+Appendix A of 17 CFR Part 17 (Form 102).  Max Value Length = 12 
+ 
+Src: 
+D = Proprietary/Custom  FIXML/Batch/PosRpt/Pty@ID =[Form 102 Large 
+trader Identiﬁer]  
+Party ID (448)  
+FIXML/Batch/PosRpt/Pty@Src=D 
+(Proprietary/Custom)  Account Number  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 11 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+ 
+R: 
+89 = Large Position 
+Reporting Account   Party ID Source (447)  
+FIXML/Batch/PosRpt/Pty@R=89 (Large Position 
+Reporting Account)  
+Party Role (452)  
+12. Exchange Code1 M The exchange where the contract is traded.  
+(Use ISO MIC 
+https://www.iso20022.org/10383/iso -10383-  
+market -identiﬁer -codes .) String/(varchar 10) FIXML/Batch/PosRpt/Instrmt@Exch=[MIC Code]  
+Security Exchange (207)  Exchange Code  
+13. Product  Code2  C The clearinghouse -assigned commodity code 
+for the futures or options contract.   Required if 
+data element 54, “Unique Instrument Code,”  is 
+not  provided.  String/(varchar 50)  
+Src: H = Clearing Org  
+ FIXML/Batch/PosRpt/Instrmt@ID =[ Product  Code] 
+Security ID (48)  
+FIXML/Batch/PosRpt/Instrmt@Src=[ H]  
+Security ID Source (22)   
+14. Product Type  C Type of product .  Required if data element 54, 
+“Unique Instrument Code,”  is not provided.  FUT = Futures  
+OOF = Options on Futures  
+OOC = Options on Combos  FIXML/Batch/PosRpt/Instrmt@SecTyp  
+Proudct Type  (167)  
+  
+ 
+1 The data element “Exchange Code” is also referred to as “Exchange Indicator .”  See, 17 C.F.R. § 17  Appendix C . 
+2 The data element “Product  Code” is also referred to as “ Commodity Clearing Code.”  See, 17 C.F.R. § 17 Appendix C . 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 12 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+CMDTYSWAP = Commodity 
+Swap  
+/(varchar 25)  
+15. Instrument Code3 C Ticker symbol of the product traded.  Required 
+if data element 54, “Unique Instrument Code, ” 
+is not provided.  String/(varchar 50)  FIXML/Batch/PosRpt/Instrmt@Sym  
+Instrument Code  (55) Commodity 
+Code (1)  
+16. Contract Date4 C Month and year of the delivery or maturity of 
+the product, as applicable.  Day must be 
+provided when necessary to characterize a 
+product.   Required if data element 54, “Unique 
+Instrument Code, ” is not provided.   YYYYMM  
+YYYYMMDD  
+ 
+ FIXML/Batch/PosRpt/Instrmt@MMY  
+Contract Date  (200)  Expiration 
+Date (1) 
+17. Maturity Time  C The expiration time of an option or last trading 
+time of a future.  Only required when 
+Instrument has multiple expirations within 
+same day.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  String  
+/Local date and time with 
+UTC oﬀset.  
+/hh:mi:ss -tz 
+  hh:mi:ss.ﬀf -tz FIXML/Batch/PosRpt/Instrmt@MatTm 
+=[hh:mm:ss.sss[+ | -]hh:mm]  
+Maturity Time (1079)   
+ 
+3 The data element “Instrument Code” is also referred to as “Ticker Symbol.”  See, 17 C.F.R. § 17  Appendix C . 
+4 The data element “Contract Date” is also referred to as “Maturity Month Year.”  See, 17 C.F.R. § 17  Appendix C . 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 13 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+18. Listing Date  C Option listing date.  Only required if a product 
+with the same commodity code and maturity 
+was previously knocked out and relisted.   Not 
+required if data element 54, “Unique 
+Instrument Code, ” is provided.  YYYY -MM- DD FIXML/Batch/PosRpt/Instrmt@Issued  
+ Listing Date(225)   
+19. First Exercise Date  C The earliest time at which notice of exercise 
+can be given.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  YYYY -MM- DD  
+ FIXML/Batch/PosRpt/Instrmt/Evnt@EventTyp=25 
+First exercise date (865)  
+FIXML/Batch/PosRpt/Instrmt/ Evnt@Dt  
+Earliest Exercise Date (866)   
+20. Strike Level  C Numeric option moneyness criterion. For 
+options only.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  
+ Decimal /(28,10)  FIXML/Batch/PosRpt/Instrmt@StrkPx  
+Strike Price (202)  Strike Price  
+21. Alpha Strike  C Non -Numeric option moneyness criterion . This 
+is mandatory for all options with non-numeric 
+strike.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  String/(va rchar 256)   FIXML/Batch/PosRpt/Instrmt@AlphaStrk  
+Strike Value ( 60013)   
+22. Cap Level  C Ceiling value of a capped option or bounded 
+future.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  Decimal /(28,10)  FIXML/Batch/PosRpt /Instrmt@CapPx  
+Cap Level (1199)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 14 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+23. Floor Level  C Floor value of a capped option or bounded 
+future.   Not required if data element 54, 
+“Unique Instrument Code, ” is provided.  Decimal /(28,10)  FIXML/Batch/PosRpt /Instrmt@FlrPx  
+Floor Level(1200)   
+24. Bound or Barrier 
+Type  C Behavior of the product when it hits the bound 
+or barrier. Only provide when instrument has a 
+Cap, Floor, or Barrier.   Not required if data 
+element 54, “Unique Instrument Code, ” is 
+provided.  
+ Valid values:  
+1=Capped  
+3=Knock -in up  
+4=Knock -in down  
+5=Knock -out up  
+6=Knock -out down  
+/(tinyint 1)  FIXML/Batch/PosRpt/ Instrmt/CmplxEvnt@Typ  
+Bound Type(1484)   
+25. Bound or Barrier 
+Level  C Bound or b arrier level of a contingent option.   
+Not required if data element 54, “Unique 
+Instrument Code, ” is provided.  Decimal /(28,10)  FIXML/Batch/PosRpt/ Instrmt/CmplxEvnt@Px  
+Barrier Level (1486)   
+26. Option Type5 C Nature of the option exercise.  
+Only for Options.   Not required if data element 
+54, “Unique Instrument Code, ” is provided.  
+ 0 = Put  
+1 = Call  
+/(tinyint 1)  FIXML/Batch/PosRpt/Instrmt@PutCall  
+Option Type (201)  Put or Call  
+ 
+5 The data element “Option Type” is also referred to as “Put or Call Indicator.”  See, 17 C.F.R. § 17  Appendix C . 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 15 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+27. Option Expiration 
+Type6 C Type of exercise of an option.  
+Only for Options.   Not required if data element 
+54, “Unique Instrument Code, ” is provided.  
+ 0=European  
+1=American  
+2=Bermuda  
+99=Other  
+/(tinyint 1)  FIXML/Batch/PosRpt/Instrmt@ExerStyle  
+Option Expiration Type (1194)  
+ Exercise Style  
+28. Option Payout 
+Amount7 C Cash amount indicating the payout associated 
+with the product. Only for Binary Options.   Not 
+required if data element 54, “Unique 
+Instrument Code, ” is provided.  Decimal /(28,10)  FIXML/Batch/PosRpt/ Instrmt@OptPayAmt  
+Option Payout Amount (1195)   
+29. Option Payout 
+Type8 C The type of valuation method or payout trigger. 
+Only for Options.   Not required if data element 
+54, “Unique Instrument Code, ” is provided.  
+ 1=Vanilla  
+2=Capped  
+3=Digital (Binary)  
+4=Asian  
+5=Barrier  
+6=Digital Barrier  FIXML/Batch/PosRpt/Instrmt@OptPayoutTyp  
+Option Payout Type (1482)  
+  
+ 
+6 The data element “Option Expiration Type” is also referred to as “Exercise Style .”  See, 17 C.F.R. § 17  Appendix C . 
+7 The data element “Option Payout Amount ” is also referred to as “Payout Amount. ”  See, 17 C.F.R. § 17 Appendix C . 
+8 The data element “Option Payout Type” is also referred to as “Payout Type.”  See, 17 C.F.R. § 17  Appendix C . 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 16 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+7=Lookback  
+8=Other path dependent  
+99=Other  
+/(tinyint 1)  
+30. Settlement 
+Instrument – 
+Product Code9  O The instrument that forms the basis of an 
+option. Only required for options for which the 
+underlying is an exchange -traded instrument.   String/(varchar 50) FIXML/Batch/PosRpt/PosUnd/Undly@ID 
+=[Commodity]  
+FIXML/Batch/PosRpt/PosUnd/Undly@Src =[ H]   
+Settlement Instrument – Product Code (309)  
+Settlement  ID Source  (305)  
+ Commodity 
+code(2)  
+31. Settlement 
+Instrument - 
+Contract Date10 O Underlying delivery year and month (and day 
+where applicable). Only for options that 
+reference a product with maturity month year.    YYYYMM  
+YYYYMMDD  FIXML/Batch/PosRpt/PosUnd/Undly@MMY 
+Settlement Instrument - Contract Date   (313)  Expiration 
+Date(2)  
+32. Long Position  C The total of long open contracts carried at the 
+end of the day.  If Long (Short) Position is 
+reported, Short (Long) Position is also required 
+and should be populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  
+ FIXML/Batch/PosRpt/Qty@Typ =FIN  
+ Report Type 
+Long -Buy- 
+Stopped  
+ 
+9 The data element “ Settlement Instrument – Product Code ” is also referred to as “ Underlying Contract ID .”  See, 17 C.F.R. § 17 Appendix C . 
+10 The data element “Settlement Instrument – Contract Date” is also referred to as “Underlying Maturity Month Year.”  See, 17 C.F.R. § 17 Appendix C . 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 17 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Long 
+Long Quantity (704)  
+33. Short Position  C The total of short open contracts carried at the 
+end of the day.  If Short(Long) Position is 
+reported, Long(Short) Position is also required 
+and should be populated with ‘0’ if null.   Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ =FIN  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Short 
+Short Quantity (705)  Report Type 
+Short -Sell- 
+Issued  
+34. Contracts Bought  C The total quantity of contracts bought (gross) 
+during the day associated with a special 
+account, including all block trades and  
+contracts claimed for clearing as a result of  
+trade allocations such as give -ups.  Do not 
+include exchanges of derivatives for related 
+positions EDRPs (EFP , EFS or EFR, EOO) or 
+transfers.  If Long (Short) Position is reported, 
+Short (Long) Position is also required and 
+should be populated with ‘0’ if null.   
+  
+ Int (value can be no larger 
+than 2,147,483,647)    FIXML/Batch/PosRpt/Qty@Typ =TOT  
+ 
+Position Type (703) FIXML/Batch/PosRpt/Qty@Long 
+Long Quantity (704)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 18 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+35. Contracts Sold  C The total quantity of contracts sold (gross) 
+during the day associated with a special 
+account, including all block trades and  
+contracts claimed for clearing as a result of  
+trade allocations such as give -ups.  Do not 
+include EDRPs (EFP , EFS or EFR, EOO) or 
+transfers . If Short(Long) Position is reported, 
+Long(Short) Position is also required and should 
+be populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)   
+FIXML/Batch/PosRpt/Qty@Typ =TOT  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Short 
+Short Quantity (705)   
+36. Exchange for 
+Physical (EFPs) 
+Bought  C The quantity of purchases of futures in 
+connection with Exchanges for Physical (EFPs).  
+ 
+EFPs include transactions involving the 
+simultaneous execution of a futures contract 
+and a corresponding physical transaction, or 
+any similar transaction commonly known to the 
+trade as an EFP . If Long (Short) Position is 
+reported, Short (Long) Position is also required 
+and should be populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EP  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Long  
+Long Quantity (704)   
+37. EFPs Sold  C The quantity of sales of futures in connection 
+with EFPs. If Short(Long) Position is reported, 
+Long(Short) Position is also required and should 
+be populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EP  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Short   
+Short Quantity (705)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 19 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+38. Exchanges for 
+Swaps (EFSs) 
+Bought (also known 
+as Exchanges for 
+Risk (EFRs))  C The quantity of purchases of futures in 
+connection with exchanges for swaps (EFSs), 
+also known as exchanges for risk (EFRs)., EFSs 
+and EFRs include the simultaneous exchange of 
+a futures contract and a corresponding swap or 
+other derivative transaction, or  any similar 
+transaction commonly known to the trade as 
+an EFS or EFR.  If Long (Short) Position is 
+reported, Short (Long) Position is also required 
+and should be populated with ‘0’ if null.   Int (value can be no larger 
+than 2,147,483,647)   
+FIXML/Batch/PosRpt/Qty@Typ= ES Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Long  
+Long Quantity (704)   
+39. EFSs Sold (also 
+known as EFRs)  C The quantity of sales of futures in connection 
+with EFSs (also known as EFRs ). If Short(Long) 
+Position is reported, Long(Short) Position is also 
+required and should be populated with ‘0’ if 
+null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= ES Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short  Quantity (705)   
+40. Exchanges of 
+Option for Option 
+(EOOs) Bought  C The quantity of purchases of options in 
+connection with exchanges of options for 
+options (EOOs).  EOOs include transactions 
+involving the simultaneous execution of options 
+and a corresponding transaction in an over -the-
+counter option, or any similar transa ction 
+commonly known to the trade as an EOO. If 
+Long (Short) Position is reported, Short (Long) 
+Position is also required and should be 
+populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)   
+FIXML/Batch/PosRpt/Qty@Typ= EO Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Long  
+Long Quantity (704)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 20 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+41. EOOs Sold  C The quantity of sales of options in connection 
+with EOOs.  If Short(Long) Position is reported, 
+Long(Short) Position is also required and should 
+be populated with ‘0’ if null.   Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EO Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705)   
+42. Delivery Notices 
+Stopped  C The number of futures contracts for which 
+delivery notices have been stopped during a 
+day. If Long (Short) Position is reported, Short 
+(Long) Position is also required and should be 
+populated with ‘0’ if null.   Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= DN Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Long  
+Long Quantity (704)  Report Type 
+Long -Buy- 
+Stopped  
+43. Delivery Notices 
+Issued  C The number of futures contracts for which 
+delivery notices have been issued during a day.  
+If Short(Long) Position is reported, Long(Short) 
+Position is also required and should be 
+populated with ‘0’ if null.   
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= DN Position Type 
+(703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705)  Report Type 
+Short -Sell- 
+Issued  
+44. Long Options 
+Expired  C Long option positions expired without being 
+exercised. If Long (Short) Position is reported, 
+Short (Long) Position is also required and 
+should be populated with ‘0’ if null.  
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EXP  
+Position Type (703)  
+FIXML/Batch/PosRpt/ Qty@Long  
+Long -Quantity (704)   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 21 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+45. Short Options 
+Expired  C Short option positions expired without being 
+exercised.  If Short(Long) Position is reported, 
+Long( Short) Position is also required and should 
+be populated with ‘0’ if null.   
+ Int (value can be no larger 
+than 2,147,483,647)   FIXML/Batch/PosRpt/Qty@Typ= EXP  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705)   
+46. Long Options 
+Exercised  C Long options position exercised during the day, 
+including options that are automatically 
+exercised. If Long (Short) Position is reported, 
+Short (Long) Position is also required and 
+should be populated with ‘0’ if null.  
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EX  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Long  
+Long -Quantity (704)   
+47. Short Options 
+Exercised  C Short options positions exercised by the holder 
+during the day, including options that are 
+automatically exercised. If Short(Long) Position 
+is reported, Long(Short) Position is also 
+required and should be populated with ‘0’ if 
+null.  
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= EX  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705)   
+48. Long Futures 
+Assigned  C Long futures assigned as the result of an option 
+exercise (for example, the exercise of a long call 
+or a short put). If Long (Short) Position is 
+reported, Short (Long) Position is also required 
+and should be populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= AS  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Long   
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 22 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+ Long -Quantity (704)  
+49. Short Futures 
+Assigned  C Short futures assigned as the result of an 
+option exercise (for example, the exercise of a 
+short call or a long put). If Short(Long) Position 
+is reported, Long(Short) Position is also 
+required and should be populated with ‘0’ if 
+null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= AS  
+Position Type (703)  
+FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705)   
+50. Long Transfers Sent  C Long positions sent through other transfers 
+during the day.  (Do not include give -ups).  If 
+Long (Short) Position is reported, Short (Long) 
+Position is also required and should be 
+populated with ‘0’ if null.  
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= TRF  
+Position Type (703)   
+FIXML/Batch/PosRpt/Qty@Long   
+Long -Quantity (704)   
+51. Long Transfers 
+Received  C Long positions received through other transfers 
+during the day.  (Do not include give -ups). If 
+Long (Short) Position is reported, Short (Long) 
+Position is also required and should be 
+populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= RCV  
+Position Type (703)   
+FIXML/Batch/PosRpt/Qty@Long   
+Long -Quantity (704)   
+52. Short Transfers Sent  C Short positions sent through other transfers 
+during the day.  (Do not include give -ups).  If 
+Short(Long) Position is reported, Long(Short) 
+Position is also required and should be 
+populated with ‘0’ if null.  Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= TRF  
+Position Type (703)  FIXML/Batch/PosRpt/Qty@Short   
+Short -Quantity (705 )  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 23 of 113 
+Item  Data Element  Use CFTC Description, Purpose or  
+Instruction  Valid Values  FIXML Path (Tag#)  Legacy  
+Field  
+. 
+ 
+53. Short Transfers 
+Received  C Short positions received through other 
+transfers during the day.  (Do not include give -
+ups).  If Short(Long) Position is reported, 
+Long(Short) Position is also required and should 
+be populated with ‘0’ if null.   
+ Int (value can be no larger 
+than 2,147,483,647)  FIXML/Batch/PosRpt/Qty@Typ= RCV  
+Position Type (703)  FIXML/Batch/PosRpt/Qty@Short  
+Short -Quantity (705 )  
+54 Unique Instrument 
+Code  C Combined with MIC (Tag 207), Report Date, 
+Reporting F irm ID and Account ID. This 
+exchange -assigned code serves as primary key 
+for the product reference ﬁle and uniquely 
+identiﬁes the derivative contract at the 
+instrument level.  This code may NOT include 
+the following symbols:  +, *  Only required if 
+data el ements 13 through 29 are NOT provided.  
+UIC must be used by DCM and provided to 
+CFTC in product reference ﬁle.    String (varchar 50) / 
+8 = Exchange symbol  FIXML/Batch/PosRpt /Instrmt/AID@AltID (455)  
+(@AltIDSrc=8) (456)   
+ 
+Commodity Futures Trading 
+Commission 
+Division of Data Guidebook for Part  17 
+ 
+  Page 24 of 113 
+3 Technical Requirements 
+ Reporting Schedules 
+Reports ﬁled under Section 17.00(a) must be submitted through electronic data 
+transmission procedures approved in writing by the Commission or its designee not 
+later than 9 a.m. on the business day following  that to which the information  
+pertains.  Unless  otherwise  speciﬁed  by the Commission or its designee, the stated 
+time is eastern time for information concerning markets located in that time zone, and central time for information concerning all other markets.  
+Reporting  Time  for § 17.00(a)  Reports  
+9:00  AM (Local  Mkt Time)  LTPOS  
+The deﬁnition of business day in § 1.3 of the Commission’s regulations includes 
+all days except Sundays and holidays. For the purposes of complying with Part 
+17, reporting ﬁrms  may elect to not  consider  Saturdays  to be a business  day, as 
+Saturday  is not commonly  known as such.  Instead, reporting ﬁrms  may submit 
+Part 17 data records under the schedule displayed in the following table. In the table, the submission day is the day of the week that the relevant report for the associated  reporting  day is expected  by the Commission.  The time during  the day 
+that reports are expected is unchanged from § 17.02(a).  
+The reporting schedule displayed in the table below does not consider holidays. To the extent  that a U.S. Federal  government  holiday  falls on the submission  day, it is 
+permissible  for the  submission of the applicable Part 17 data record to occur on the 
+business day immediately after the  usual  submission  day. Please  note  that any 
+submission  made  under  Part 17 can be made  prior to the relevant submission day 
+shown below. Early submission is beneﬁcial in that it may allow the Commission to review your submission earlier and provide more timely feedback regarding the acceptability of the ﬁle structure and data contents.  
+Reporting  Schedule  for § 17.00(a)  Reports  
+Monday  Tuesday  Wednesday  Thursday  Friday  Saturday  Sunday  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 25 of 113 
+ Report  Day  
+ Submit Day1 Tuesday  Wednesday  Thursday  Friday  Monday  Monday  Monday  
+ 
+ Electronic Data Submission Procedure  
+If reporting  for an account  the ﬁrst time,  identify  the special  account  to the Commission  
+on Form  102A and submit the form via CFTC Portal at https://portal.cftc.gov/  . 
+Information on Form 102A can be found  https://www.ecfr.gov/current/title-
+17/chapter -I/part -17/appendix -Appendix%20A%20to%20Part%2017  
+ Format the  Data for Transmission  
+Consolidate the records into an XML -formatted ﬁle following the FIXML Position Report, as 
+described in Section 2, Data Dictionary for Large Trader Reports. See 
+https://ﬁximate.ﬁxtrading.org/ for more details.  
+Make sure that your XML contains the FIXML message tag with the namespace. See sample messages in Appendix C.  
+3.3.1   Reserved Characters  
+Some  characters  have  a special meaning  in XML.  If you place  a character  like "<" inside  an 
+XML element, it will generate an error because the parser interprets it as the start of a 
+new element.  
+This will generate an XML  error:  
+To avoid  this error,  replace the "<" character with  an entity  reference:  
+ 
+As shown in the table below, there  are 5 predeﬁned entity  references  in XML. If the 
+indicated characters  appear in data  ﬁelds,  ensure  they  are replaced  with the appropriate  
+entity reference value.  <message>if  salary  < 1000  then</message>  
+<message>if  salary  &lt; 1000  then</message>  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 26 of 113 
+ 
+ 
+3.3.2  Special Characters 
+Non -printable and special characters are not supported by all systems. They are often 
+translated or interpreted  erroneously  and may  cause  data  processing issues.  There  are 
+256 ASCII  characters,  including the extended ASCII character set. To reduce confusion 
+over which characters can be processed, ASCII characters can be classiﬁed in the 
+following groups:  
+ 
+ 
+Many  currency  denominations  and foreign  symbols  fall under  the extended  ASCII  character  
+set. For this reason, any reference to currency denomination should be reported as the 
+three -letter alphabetic ISO 4217 currency code (e.g., USD, GBP , EUR, JPY) rather than a 
+translated currency name or ambiguous currency symbol (e.g., $, £, € , ¥). 
+ 
+ File Naming Convention  
+The Commission  uses ﬁle names  to facilitate  routing  inbound data  ﬁles to the 
+appropriate  processing application. Each ﬁle must contain data for a single reporting 
+ﬁrm for a single date. Do not combine records from 2 diﬀerent dates or two diﬀerent 
+reporting ﬁrms.  
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 27 of 113 
+For the Large  Trader  Position  report  the ﬁle naming  convention  is: 
+LTPOS_[IDENT]_[Sender ID]_[YYYYMMDD].[EXTENSION]  
+IDENT:  
+This ﬁeld  is the 3-5 character  identiﬁer  provided  by the CFTC  during  the account 
+registration process that is assigned to the submitting entity.  
+ 
+Sender  ID: 
+This ﬁeld  is either  the CFTC -assigned  3 character Alpha code  assigned  to the 
+responsible  reporting  ﬁrm or the name of the servicing ﬁrm entity for third party 
+ﬁlings to represent the on behalf of ID. The name of the servicing ﬁrm may be up 
+to 20 characters in length.  
+YYYYMMDD:  
+This ﬁeld  is the calendar date  in string  format  of the data  being  reported  in 
+YYYYMMDD date  format.  
+EXTENSION:  
+This refers  to the ﬁle extension  .fixml  
+File Naming Convention  - Direct  Submission  Files  
+The following  examples  represent  Large  Trader  Position  data  submitted directly  
+to CFTC  by a ﬁrm with the CFTC reporting identiﬁer “ABC”:  
+LTPOS_  ABC_ABC_20160601.fixml  (FIXML  Large  Trader  Position  Rpt) 
+ 
+File Naming Convention  - On Behalf  Files  
+Third parties can submit reports on behalf of a reporter. The following examples represent Large Trader  Position  data  submitted to CFTC  by a servicing  ﬁrm with 
+the Sender  ID “DEF” on behalf of a ﬁrm with the CFTC reporting identiﬁer “ABC”:  
+LTPOS_  ABC_DEF_20160601.fixml  (On-Behalf -Of FIXML  Large  Trader  Position  Rpt) 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 28 of 113 
+ 
+File Naming Convention  – Test Files  
+CFTC has established user acceptance test (UAT) environments for testing data 
+ﬁles during development.  Use the following  naming  convention  to distinguish 
+test data  ﬁles from  production reports:  
+LTPOS_  ABC_ABC_20160601_TEST.fixml  (Test  FIXML  Large  Trader  Position  Rpt) 
+LTPOS_  ABC_DEF_20160601_TEST.fixml  (Test  On-Behalf -Of FIXML  Large  Trader  Position  Rpt) 
+. 
+ Aggregate  the Records  
+The example  below  shows how  we receive data  currently  in 80 byte  format  and how  we 
+expect  the data to  be aggregated  in the FIXML  format.  The Part 17 Large  Trader  data  
+report  has been  submitted using  an 80- byte columnar data format. That format required 
+separate reports (rows)  for each count (RP/DN/EP) being submitted. Transition of the 
+report to the FIXML Position Report message eliminates duplicate data entry, consolidating all counts under one report, while also eliminating the need for encoding numeric values for sign and de cimal point location. Reporters should submi t a single 
+FIXML Position Report for each account and contract that contains all related quantities for the reporting date. The table below represents how the 80 byte record format compares to the FIXML format.  
+ 
+Reported  Quantity  80-Byte  FIXML  
+EOD  Position  Long/Short  √ √ 
+Delivery  Notices  Issued/Stopped  √ √ 
+ERFPs Bought/Sold  √  
+Exchange  for Physicals11 Bought/Sold   √ 
+ 
+11 An EFP transaction  involves the simultaneous execution of a futures contract and a corresponding physical 
+transaction or a forward contract on a physical transaction, or any similar transaction commonly known to the trade as an 
+E F P. 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 29 of 113 
+Exchange  for Options12 Bought/Sold   √ 
+Exchange  for Swaps13 Bought/Sold   √ 
+Total  Contracts  Bought/Sold   √ 
+Options Expired Long/Short   √ 
+Options Exercised Long/short   √ 
+Futures Assigned Long/Short   √ 
+Long/Short Transfers Sent/Received   √ 
+ 
+ 
+Previously  the report  for an account  in an exchange -listed  futures  contract  could  have  up 
+to three  rows in the 80 -byte format:  
+ 
+ 
+The new  report  for an account  in an exchange -listed  futures  contract  could  have  a single  
+report  with up to ﬁve counts in the FIXML format:  
+ 
+12 An EOO transaction involves the simultaneous execution of options and a corresponding transaction in an over -the-
+counter option, or any similar transaction commonly known to the trade as an EOO.  
+13 An EFS (also  known  as EFR)  transaction  involves the simultaneous exchange of a futures contract and a 
+corresponding swap or other derivative transaction, or any similar transaction commonly known to the trade as an EFS or 
+EFR. 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 30 of 113 
+ 
+ 
+Note: The new report must have at least one quantity reported. Type, Long and Short 
+should be included with quantity. The quantities must be aggregated as above.  
+ Compress the File( s) 
+After you assemble the data  ﬁle, compress it  using the GZIP or  Winzip utility. The GZIP  
+utility is freely available at http://www.gzip.org . The only acceptable ﬁle types are 
+.ZIP or .GZ. Each compressed ﬁle should  contain  only  one FIXML  ﬁle for only  one 
+reporter  and one report  date  (Business Date). You  can not have multiple reporters or 
+report dates within a single zipped ﬁle.  
+ Conn ect to CFTC with Secure FTP  
+Connect to the CFTC FTP site at traders.cftc.gov , and log in using  your  account  and 
+password. The compressed ﬁles will be submitted to the CFTC  via Secure File 
+Transfer  Protocol  (SFTP).  Reporting ﬁrms  with SFTP accounts can continue to use 
+those accounts for Part 17 reporting. 
+New  reporters  who  do not already  have  an SFTP  account must request a Secure FTP account  
+from  the CFTC. See Appendix A: SFTP Account Registration . 
+ Transmit the File(s)  
+Reports  submitted  to CFTC  under  Part 17 are subjected  to several  data quality  checks  before  
+ﬁnal processing and  promotion  into the appropriate  production  database tables. All 
+messages must  ﬁrst pass  validation against  the applicable  reference  XML standards  (e.g.,  
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 31 of 113 
+FIXML)  for well-formedness  and enumerated  valid value sets.  Appendix B contains details 
+of all the validations . 
+Note:  If Report Date is same as file processing date, and if file is received before 2 PM, then the file will be 
+processed after 2 PM.  
+  Data Integrity 
+The inclusion of data elements reﬂecting counts of transactions, expirations or assignments, 
+that resulted in day -to-day changes in positions enables reporting ﬁrms to perform an 
+internal consistency check on position reports required to be submitted under Part 17.   The 
+day-to-day change in the size of a net position for a particular special account should equal 
+the net value of contracts bought and sold; relevant EDRPs bought and sold; expirations, exercises, and assignments of contracts; and transfers sent and received.    
+More speciﬁcally, for futures positions, the day -to-day change in net position should 
+equal:  
+Δ(Net Futures Position)  
+= (Contracts Bought - Contracts Sold) + (EFP Bought -  EFP Sold)  
++ (EFS Bought -  EFS Bought) + (Notices Issued -  Notices Stopped )  
++ (Long Futures Assigned -  Short Futures Assigned )  
++ (Long Transfers Received - Long Transfers Sent)  
++ (Short Transfers Sent -  Short Transfers Received) 
+ 
+For options positions, the day -to-day change in position should equal:  
+ Δ(Net Option Position)  
+= (Contracts Bought - Contracts Sold) + (EOO Bought -  EOO Sold)  
++ (Short Options Expired - Long Options Expired)  
++ (Short Options Exercised - Long Options Exercised)  
++ (Long Transfers Received - Long Transfers Sent)  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 32 of 113 
++ (Short Transfers Sent - Short Transfers Received) 
+ 
+ Data Validation and Error Handling 
+Reports  submitted  to CFTC  under  Part 17 are subjected  to several  data quality  checks  before  
+ﬁnal processing and  promotion  into the appropriate  production  database tables. All 
+messages must  ﬁrst pass  validation against  the applicable  reference  XML standards  (e.g.,  
+FIXML)  for well-formedness  and enumerated  valid value sets.  Appendix B contains details 
+of all the validations .  
+3.10.1  Large  Trader FIXML  Reference ID 
+ 
+The Large Trader reference ID is made up of the minimum ﬁelds required to uniquely 
+identify the records. There are two options for key ﬁelds to this dataset. The ﬁrst consists of 
+the Unique Instrument code along with 4 other attributes in Table: 1 and the second is a 
+combination of several data elements  (Table: 2). Only one of the two keys must  be provided.  
+Table : 1 (UIC Key)  
+Fut Opt Data  Element  FIXML  Path  Definition  
+X X Exchange Code  FIXML/Batch/PosRpt/Instrmt@Exch  ISO 10383  Market  Identiﬁer  Code 
+for the instrument of reported 
+position  
+X X Unique Instrument 
+Code  FIXML/Batch /PosRpt /Instrmt/ AID@AltID  
+(455)  
+(@AltIDSrc=8)(456)  Unique Instrument Code  
+X X Report Date  FIXML/Batch/PosRpt@BizDt  Report Date  
+X X Reporting  Firm  ID FIXML/Batch/PosRpt/Pty@ID  (Src M)        CFTC -assigned identiﬁer for the  
+        reporting ﬁrm. 
+X X Account  ID FIXML/Batch/PosRpt/Pty@ID  (Src D) Firm Assigned Special Account  ID 
+ 
+Table : 2 (Composit e Key)  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 33 of 113 
+The options and futures contain the same reference ID parts except the options contain the 
+additional   attributes such as put or call Indicator , and strike  ﬁelds.  The reference  ID consists  
+of the data  elements  in the table below.  In the table below ‘M’ equals Mandatory and ‘C’ 
+equals conditional.  The ‘Use’ column describes conditions.  
+ 
+Fu
+t Op
+t Data  Element               FIXML  Path         Definition  Use 
+M M Report  Date  FIXML/Batch/PosRpt@Biz
+Dt Position  date   
+M M Reporting  Firm  ID FIXML/Batch/PosRpt/Pty
+@ID (Src M) Reporting  Firm  Alpha  Code   
+M M Account  ID FIXML/Batch/PosRpt/Pty
+@ID (Src D) Special  Account  of trader   
+M M Exchange Code  FIXML/Batch/PosRpt/Instr
+mt@Exch  ISO 10383  Market  Identiﬁer  
+Code for the instrument of 
+reported position   
+M M Product  
+Code   FIXML/Batch/PosRpt/Instr
+mt@ID  Exchange's  unique  identiﬁer  
+for the instrument   
+M M Product 
+Type  FIXML/Batch/PosRpt/Inst
+rmt@SecTyp  Type of product .  
+M M Instrument 
+Code  FIXML/Batch/PosRpt/Inst
+rmt@Sym  Instrument Code   
+M M Contract Date  FIXML/Batch/PosRpt/Instr
+mt@MMY  Contract Date   
+      C C Maturity Time  FIXML/Batch/PosRpt/Inst
+rmt@MatTm  Maturity Time  If  needed to 
+identify unique 
+product. 
+       C     Listing Date  FIXML/Batch/PosRpt/Inst
+rmt@Issued  Listing Date  If  needed to 
+identify unique 
+product. 
+ M Option Type  FIXML/Batch/PosRpt/Instr
+mt@PutCall  0 = Put 
+1 = Call   
+ M Option Expiration Type  FIXML/Batch/PosRpt/Inst
+rmt@ExerStyle  Option Expiration Type   
+ C First Exercise Date  FIXML/Batch/PosRpt /Instr First Exercise Date  If  needed to 
+identify unique 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 34 of 113 
+mt/Evnt@EventTyp=25  
+FIXML/Batch/PosRpt /Instr
+mt/Evnt@Dt  product.  
+ C Strike  Level  FIXML/Batch/PosRpt/Instr
+mt@StrkPx  Strike  Level  (Strike  Level  or 
+(Cap and/or   
+Floor ) ) or Alpha 
+Strike  is required  
+ C Alpha Strike  FIXML/Batch/PosRpt/Inst
+rmt@ AlphaStrk  Alpha Strike  Strik e Level  or 
+Alpha Strike 
+required  
+      C     C Cap Level  FIXML/Batch/PosRpt/Inst
+rmt@ CapPx  Cap Level  (Cap and or 
+Floor) or Strike  
+Level  
+      C      C Floor Level  FIXML/Batch/PosRpt/Inst
+rmt@ FlrPx  Floor Level  (Cap and or 
+Floor) or Strike  
+Level  
+ C Bound or Barrier Type  FIXML/Batch/PosRpt/Inst
+rmt/CmplxEvnt@Typ  Bound or Barrier Type  If  needed  to 
+identify unique 
+product. 
+ C Bound or Barrier Level  FIXML/Batch/PosRpt/ 
+Instrmt/CmplxEvnt@Px  Bound or Barrier Level  If  needed to 
+identify unique 
+product. 
+ C Payout Amount  FIXML/Batch/PosRpt/Inst
+rmt@OptPayAmt Payout Amount  If  needed  to 
+identify unique product. 
+ C Payout Type  FIXML/Batch/PosRpt/Inst
+rmt@OptPayoutTyp  Payout Type  If  needed to 
+identify unique 
+product. 
+ 
+ Error and Omission Correction Handling 
+Reporting markets shall ﬁle corrections to errors or omissions in data previously ﬁled 
+with the Commission pursuant to §17.00(a) using the same format, coding structure, and electronic data submission procedures previously described in this section. To 
+correct errors or omissions a ﬁrm must resubmit ONLY the corrected records for the 
+aﬀected day. The records will be reprocessed and will replace the data records that 
+have errors for that day. Data correction and resubmission must be done in a timely 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 35 of 113 
+manner. Make sure that the key data elements listed in Section 3.10.1  are included 
+when submitting  changes.  This will ensure  that the correct  records  get updated.  
+ 
+The examples below show scenarios when reporters should use New, Change and 
+Delete messages. Note: The reference IDs are highlighted in blue. The action to be taken (New, Update, or Delete) is highlighted  in yellow. The  changes  made  to the 
+data  in the “Change”  section  are highlighted  in violet.  
+ 
+Please  forward  questions  regarding  format,  content,  and transmission  of Part 17 data   
+submission  to the CFTC at Part17TechSupport@cftc.gov.  
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 36 of 113 
+3.11.1 Initial Submission — New 
+• The account/contract has reportable  activity  on the reporting  date  
+The initial report for an account/contract/reporting date must contain the action code 
+for “New”. In FIXML set FIXML/Batch/PosRpt@Actn=“1”. There can only be one such 
+report per reporting date ﬁle. Include  all reported  quantities  for the 
+account/contract/reporting  date  in a single  FIXML  Position  Report.  
+Submission  Example 1: Initial  Report  with  the Action  Code  of “New”  
+<?xml version="1.0" encoding="UTF -8"?> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest " 
+ <Batch TotMsg="2"> 
+  <Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2017-03-
+02T09:30:47Z"/> 
+  <!-- Futures --> 
+  <PosRpt RptID="1" BizDt="2017-02-13" Actn="1" > 
+   <Pty ID="ZZZ" Src="M" R="116"/> 
+   <Pty ID="100" Src="D" R="89"/> 
+   <Pty ID="100" Src="N" R="89"/> 
+        <Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT" 
+SecTyp="FUT" Sym="ABC"> 
+                    <AID AltID="XX" AltIDSrc ="8"/>  
+</Instrmt>  
+ 
+   <Qty Typ="FIN" Long="10" Short="20"/> 
+   <Qty Typ="ES" Long="40" Short="30"/> 
+   <Qty Typ="EP" Long="50" Short="60"/> 
+   <Qty Typ="DN" Long="80" Short="70"/> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 37 of 113 
+   <Qty Typ="TRF" Long="45" Short="35"/> 
+  </PosRpt> 
+  <!-- Options --> 
+  <PosRpt RptID="12" BizDt="2017-02-13" Actn="1"> 
+   <Pty ID="ZZZ" Src="M" R="116"/> 
+   <Pty ID="100" Src="D" R="89"/> 
+   <Pty ID="100" Src="N" R="89"/> 
+   <Instrmt ID="S" Src="H" MMY="201705" StrkPx="3" 
+PutCall="0" 
+   Exch="XCBT" SecTyp="OOF" Sym="ABC" 
+Issued="YYYY-MM-DD" CapPx="10"     
+   FlrPx="2" ExerStyle="1" OptPayAmt="10" 
+OptPayoutTyp="3"> 
+                    <AID AltID="XX" AltIDSrc ="8"/>      
+   <Evnt EventTyp="25" Dt="YYYY-MM-DD"/>  
+   <CmplxEvnt Typ="3" Px="4" />  
+                     
+   </Instrmt> 
+   <PosUnd> <Undly ID="S" Src="H" 
+MMY="201705"/></PosUnd> 
+   <Qty Typ="FIN" Long="10" Short="20"/> 
+   <Qty Typ="EO" Long="40" Short="30"/> 
+   <Qty Typ="EXP" Long="40" Short="30"/> 
+   <Qty Typ="EX" Long="50" Short="25"/> 
+   <Qty Typ="TRF" Long="45" Short="35"/> 
+  </PosRpt> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 38 of 113 
+</Batch> </FIXML> 
+ 
+3.11.2 Correct  One or More  Errors  — Change 
+• The account/contract  has reportable  activity  on the reporting  date  
+• The initial  report  contains  errors  
+Correcting errors requires resubmitting a ﬁle containing only  the corrected individual 
+Position Reports by account/contract/reporting date. Be sure to set the action code to 
+indicate a “Change” report. In FIXML set FIXML/Batch/PosRpt@Actn=“2”. Be sure to include all the reported quantities in the corrected Position  Report.  Use the change  
+report  whenever  the previously  submitted  report  contained an error.  
+   Submission  Example 2: Existing  FUT and OOF  Position  Reports  to be 
+Updated  
+Change  Example:  
+ 
+<?xml version="1.0" encoding="UTF -8"?> 
+<!--Existing FUT and OOF Position Reports to be Updated --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="2"> 
+<Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2017-03-
+02T09:30:47Z"/> 
+<!-- Futures --> 
+<PosRpt RptID="1" BizDt="2017-02-13" Actn="1"> 
+                      <Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 39 of 113 
+<Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT" SecTyp="FUT" 
+Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/> 
+</Instrmt> 
+<Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="ES" Long="40" Short="30"/> 
+<Qty Typ="EP" Long="50" Short="60"/> 
+<Qty Typ="DN" Long="80" Short="70"/> 
+               <Qty Typ="TRF" Long="45" Short="35"/> 
+                 </PosRpt> 
+<!-- Options --> 
+<PosRpt RptID="1" BizDt="2017-02-13" Actn="1"> 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT" SecTyp="FUT" 
+Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/> 
+</Instrmt> 
+<Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="ES" Long="40" Short="30"/> 
+<Qty Typ="EP" Long="50" Short="60"/> 
+<Qty Typ="DN" Long="80" Short="70"/> 
+                 
+                 <Qty Typ="TRF" Long="45" Short="35"/> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 40 of 113 
+                 </PosRpt> 
+<!-- Options --> 
+<PosRpt RptID="12" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" StrkPx="3" PutCall="0" 
+Exch="XCBT" SecTyp="OOF" Sym="ABC" Issued="YYYY-MM-DD" CapPx="10" 
+FlrPx="2" ExerStyle="1" OptPayAmt="10" OptPayoutTyp="3"> 
+                      <AID AltID="XX" AltIDSrc="8"/> 
+                      <Evnt EventTyp="25" Dt="YYYY-MM-DD"/> 
+                      <CmplxEvnt Typ="3" Px="4"/> 
+                       
+  </Instrmt> 
+<PosUnd><Undly ID="S" Src="H" MMY="201705"/></PosUnd> 
+<Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="EO" Long="40" Short="30"/> 
+<Qty Typ="EXP" Long="40" Short="30"/> 
+<Qty Typ="EX" Long="50" Short="25"/> 
+<Qty Typ="TRF" Long="45" Short="35"/> 
+ 
+</PosRpt></Batch> 
+</FIXML> 
+ 
+ 
+ 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 41 of 113 
+ 
+Submission  Example 3: Changed / Updated Position  Report s 
+ 
+  <?xml version="1.0" encoding="UTF -8"?> 
+<!-- Changed - Updated Position Reports --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="2"> 
+<Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2017-03-
+02T09:30:47Z"/> 
+<!-- Futures --> 
+<PosRpt RptID="1" BizDt="2017-02-13" Actn="2"> 
+                      <Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT" SecTyp="FUT" 
+Sym="ABC"> 
+ <AID AltID="XX" AltIDSrc="8"/> 
+</Instrmt>                
+     <Qty Typ="FIN" Long="10" Short="21"/> 
+           <Qty Typ="ES" Long="40" Short="32"/> 
+           <Qty Typ="EP" Long="50" Short="63"/> 
+           <Qty Typ="DN" Long="80" Short="74"/> 
+<Qty Typ="TRF" Long="45"Short="36"/> 
+</PosRpt> 
+<!-- Options --> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 42 of 113 
+<PosRpt RptID="12" BizDt="2017-02-13" Actn="2"> 
+                      <Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" StrkPx="3" PutCall="0" 
+ Exch="XCBT" SecTyp="OOF" Sym="ABC" Issued="YYYY-MM-DD" 
+CapPx="10"        
+               FlrPx="2" ExerStyle="1" OptPayAmt="10" 
+OptPayoutTyp="3">      
+                <AID AltID="XX" AltIDSrc="8"/> 
+                <Evnt EventTyp="25" Dt="YYYY-MM-DD"/> 
+       <CmplxEvnt Typ="3" Px="4"/> 
+       </Instrmt>    
+<PosUnd><Undly ID="S" Src="H" MMY="201705"/></PosUnd> 
+<Qty Typ="FIN" Long="10" Short="21"/> 
+<Qty Typ="EO" Long="40" Short="32"/> 
+<Qty Typ="EXP" Long="40" Short="31"/> 
+<Qty Typ="EX" Long="50" Short="26"/> 
+<Qty Typ="TRF" Long="45" Short="36"/> 
+</PosRpt></Batch> 
+</FIXML> 
+ 
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 43 of 113 
+ 
+1.1.2  The Entire  Report  Is Wrong  — Delete 
+• There  is no reportable  activity  for the account/contract  on the reporting  date  
+ 
+Only perform a delete  action when the entire Position Report for an 
+account/contract/reporting date was  submitted in error  i.e., there  was no reportable  
+activity. In order  to delete  an erroneously  submitted report, resubmit the entire 
+previously submitted report, being sure to set the action code to indicate a “Delete” 
+report. In FIXML set FIXML/Batch/PosRpt@Actn=“3”. Again, this is only used when the 
+entire  report is wrong . 
+ 
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 44 of 113 
+ 
+Submission Example 4: Existing  FUT and OOF  Position  Reports  to be Delete  
+Delete  Example:  
+ 
+<?xml version="1.0" encoding="UTF -8"?> 
+<!-- Existing FUT and OOF Position Reports to be Deleted. --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="2"> 
+<Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2017-03-02T09:30:47Z"/> 
+<!-- Futures --> 
+  <PosRpt RptID="1" BizDt="2017-02-13" Actn="1" > 
+   <Pty ID="ZZZ" Src="M" R="116"/> 
+   <Pty ID="100" Src="D" R="89"/> 
+   <Pty ID="100" Src="N" R="89"/> 
+ <Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT"   
+       SecTyp="FUT"Sym="ABC"> 
+       <AID AltID="XX" AltIDSrc="8"/> 
+</Instrmt>   
+   <Qty Typ="FIN" Long="10" Short="20"/> 
+   <Qty Typ="ES" Long="40" Short="30"/> 
+   <Qty Typ="EP" Long="50" Short="60"/> 
+   <Qty Typ="DN" Long="80" Short="70"/> 
+   <Qty Typ="TRF" Long="45" Short="35"/> 
+  </PosRpt> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 45 of 113 
+  <!-- Options --> 
+  <PosRpt RptID="12" BizDt="2017-02-13" Actn="1" > 
+   <Pty ID="ZZZ" Src="M" R="116"/> 
+   <Pty ID="100" Src="D" R="89"/> 
+   <Pty ID="100" Src="N" R="89"/> 
+ <Instrmt ID="S" Src="H" MMY="201705" StrkPx="3" PutCall="0"     
+       Exch="XCBT" 
+   SecTyp="OOF"Sym="ABC"Issued="YYYY-MM-DD"CapPx="10" 
+FlrPx="2"   
+                    ExerStyle="1"OptPayAmt="10"OptPayoutTyp="3"> 
+                    <AID AltID="XX" AltIDSrc="8"/>   
+   <Evnt EventTyp="25" Dt="YYYY-MM-DD"/> 
+   <CmplxEvnt Typ="3" Px="4"/> 
+       </Instrmt> 
+                     <PosUnd><Undly ID="S" Src="H" 
+MMY="201705"/></PosUnd> 
+<Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="EO" Long="40" Short="30"/> 
+<Qty Typ="EXP" Long="40" Short="30"/> 
+<Qty Typ="EX" Long="50" Short="25"/> 
+<Qty Typ="TRF" Long="45" Short="35"/>  
+       </PosRpt> 
+</Batch></FIXML> 
+ 
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 46 of 113 
+Submission  Example 5:Deleted  Position  Reports   
+<?xml version="1.0" encoding="UTF -8"?> 
+<!-- Deleted Position Reports --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="2"> 
+<Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2017-03-
+02T09:30:47Z"/> 
+<!-- Futures --> 
+<PosRpt RptID="1" BizDt="2017-02-13" Actn="3"> 
+      <Pty ID="ZZZ" Src="M" R="116"/> 
+      <Pty ID="100" Src="D" R="89"/> 
+      <Pty ID="100" Src="N" R="89"/> 
+      <Instrmt ID="S" Src="H" MMY="201705" 
+Exch="XCBT" SecTyp="FUT"       
+                       Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/> 
+</Instrmt> 
+<Qty Typ="FIN" Long="10" Short="20/> 
+<Qty Typ="ES" Long="40" Short="30"/> 
+<Qty Typ="EP" Long="50" Short="60/> 
+<Qty Typ="DN" Long="80" Short="70"/> 
+<Qty Typ="TRF" Long="45" Short="35"/> 
+</PosRpt> 
+<!-- Options --> 
+<PosRpt RptID="12" BizDt="2017-02-13" Actn="3"> 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17  
+ 
+ Page 47 of 113 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" StrkPx="3" PutCall="0" 
+  
+      Exch="XCBT" SecTyp="OOF" Sym="ABC" Issued="YYYY-MM-DD" 
+CapPx="10"    
+      FlrPx="2" ExerStyle="1" OptPayAmt="10" OptPayoutTyp="3"> 
+       <AID AltID="XX" AltIDSrc="8"/> 
+       <Evnt EventTyp="25" Dt="YYYY-MM-DD"/> 
+       <CmplxEvnt Typ="3" Px="4" />  
+        
+       </Instrmt>    
+<PosUnd><Undly ID="S" Src="H" MMY="201705"/></PosUnd> 
+<Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="EO" Long="40" Short="30"/> 
+<Qty Typ="EXP" Long="40" Short="30"/> 
+<Qty Typ="EX" Long="50" Short="25"/> 
+<Qty Typ="TRF" Long="45" Short="35"/> 
+</PosRpt> 
+  
+</Batch> 
+</FIXML> 
+ 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 48 of 113 
+Appendix A:  SFTP  Account Registration  
+The compressed ﬁles will be submitted to the CFTC via Secure File Transfer Protocol (SFTP). 
+Reporting markets with SFTP accounts can continue to use those accounts for this reporting requirement.  New reporters  who  do not already  have  an SFTP  account, must  request a Secure 
+FTP account  from  the CFTC. The following steps describe the process for that request.  
+  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 49 of 113 
+ 
+Registration  Step  1: 
+Users will browse to the Account Creation Page on the Commission’s website ( 
+https://accountcreation.cftc.gov/CFTCAccount.aspx ). Users  will be presented  with a CFTC  
+Usage Agreement for review.  
+Users  will be required  to conﬁrm that they  have  read  the agreement  and agree  to abide  by its 
+terms  by clicking the checkbox and pressing the “Agree” button.  
+ 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 50 of 113 
+Registration  Step  2: 
+Users  will be presented  with the Account  Creation  page  where  they  will be asked  to supply:  
+ 
+(1) First  Name  – The ﬁrst name  of the user  requesting  the account  
+(2) Last Name  – The last name  (or surname)  of the user  requesting  the account  
+(3) Company  Name  – The company  that will be supplying  the data  to the CFTC  
+(4) Email Address – The email address of the contact. The email address must be from the 
+domain that will be submitting  data,  i.e. the reporting  market’s  domain.  Third  party  
+email domains  (e.g., Hotmail, Yahoo!, Gmail, etc.) will not be accepted.  
+(5) Contact  Telephone  Number  – The requestor’s  phone  number, in case  CFTC  needs  to 
+conﬁrm the user via a phone call.  
+(6) Contact  FAX Number  (not required).  
+ 
+ 
+ 
+ 
+Once  the user  has submitted the information,  the request will be passed  to the CFTC’s  Oﬃce 
+of Data and Technology for approval.  
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 51 of 113 
+ 
+Registration  Step  3: 
+ 
+Once the account creation is approved, the user will be sent an email with a link to conﬁrm 
+the request.  This email will include  the three -letter  Alpha  Code  that must  be used  for all data  
+submissions made by this company to the CFTC.  
+ 
+ 
+Clicking  the link (or posting  the URL into a browser)  will bring  users  to the account  conﬁrmation  
+screen where they will be asked to conﬁrm the account creation request by typing in the three -
+letter Alpha Code supplied in the email.  
+ 
+Once  the user  has conﬁrmed  the Alpha Code,  the page  will tell them  that their  request has 
+been submitted.  
+ 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 52 of 113 
+ 
+REQUEST  ACCOUNT  CREATION  FOR  DATA  SUBMISSION  TO THE CFTC  
+The CFTC  will review  your  request  and send  you an email  after  your  request  has been  processed.  
+ 
+Return  to CFTC.gov  
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 53 of 113 
+ 
+Registration  Step  4: 
+ 
+The user  will receive two emails  from  the CFTC.  Each  email will address  guidelines  for using  the 
+account. The  ﬁrst email will contain the  user’s  new  ID. It will also contain  instructions  on 
+converting  a non -Secure FTP Account to a Secure FTP Account. All reporting markets that are 
+providing Part 17 reporting must use Secure FTP to transmit data. The second email will contain 
+the user’s new password for the FTP account.  
+ 
+ 
+Registration  Step  5: 
+ 
+All reporting markets must exchange their Public Keys with the CFTC to activate their Secure FTP account.  Please  send  your  Public  Key to FTPSupport@cftc.gov as a text ﬁle attachment  along  with 
+the account name from which the ﬁle will be transmitted. You will then receive the second  email,  
+which will contain  your  new  password  for the FTP account.  
+ 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 54 of 113 
+File Transmission  
+Connect to the CFTC FTP site at traders.cftc.gov, and log in using your account and password. 
+The compressed  ﬁle can be transferred  using  normal FTP commands.  Please  do not change  the 
+directory . As soon  as the ﬁle is placed  on a CFTC server, the ﬁle will be moved  to the correct  
+directory for processing. You will not be able to see the ﬁle if you include a directory listing.  
+ 
+Upon  ﬁle receipt,  CFTC  software  will ingest  the ﬁle hrough the CFTC  ﬁrewall and begin  processing of 
+the data.  
+ 
+Technical  Support  
+ 
+Please  forward  questions  regarding  format,  content,  and transmission  of Part 17 data  submissions 
+to the CFTC at Part17TechSupport@cftc.gov.  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 55 of 113 
+ 
+Appendix  B: Data  Validation  Rules  for Large  Trader Position  Report  
+(LTPOS)  
+ 
+ 
+The submitted data  will pass through three  levels  of validations  before  being  accepted  into 
+CFTC systems.  
+ 
+The ﬁrst level  of validation  ensures  that the ﬁle meets  the basic  needs  of the FIXML  Schema.  
+The XML must be well formed, contain mandatory tags, and the format of certain ﬁelds must 
+meet minimum standards for the ﬁle  to pass through the schema  validation.  A ﬁle that fails  
+schema validation  will be rejected  entirely and an  automated email will be  sent  to the 
+reporting  party.  No partial storage of  the data can be achieved with a ﬁle that fails schema 
+validation.  Table B- 1 describes the possible schema validation errors which could be 
+encountered. Data reporters should resubmit the corrected ﬁle.  
+ 
+The second level of validation occurs immediately after the schema validation has successfully 
+completed. These are referred to as primary data validations.  These data validations check for 
+consistency and completeness regarding the data that is being reported.  For instance, certain 
+ﬁelds are required for the reporting of options, and others are required for a futures contract.  
+An automated email will be sent to the reporting party with a listing of all the errors. Table B -2 
+describes  the possible data val idation errors which can be encountered, and identiﬁes the 
+FIXML tag which is causing the error, as well as the ﬁeld number in the data dictionary which 
+describes how the value should be populated.  Files which contain records that fail a data 
+validation will be processed and stored with the exception  of the records  which had a failing  
+condition. Data  reporters  should  resend  ﬁles containing  just the failed records.  
+ 
+The third level of validation occurs when the submitted records are checked against the CFTC system of record. CFTC  personnel may  identify that certain values were incorrect and will 
+contact you for clariﬁcation and correction of records.  
+ 
+ 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 56 of 113 
+   B-1: Schema Data  Validation Rules for Large Trader  Position Report  (LTPOS)  
+ 
+Summary  of Possible  Schema  Data  Errors  and Sample Error  Messages.  
+ 
+Item  Rule  Type  Rule  Description  FIXML  Path  
+1. Required:  
+These  ﬁelds are 
+mandatory.  @RptID - Report ID 
+@BizDt  - Report  Date  
+ 
+For Schema Validation  
+@ Pty@ID(R= 116)  – Reporting Firm ID  
+@ Pty@ID(R=89) – Account ID  
+See Key Validation 12  and 13  
+ FIXML/Batch/PosRpt@RptID  
+FIXML/Batch/PosRpt@BizDt 
+FIXML/Batch/PosRpt/Pty  
+2. Date or 
+Datetime: 
+These values 
+must  be valid 
+date or time 
+values.  @Snt  - Message  Transmit  Datetime 
+@BizDt - Report Date  
+@MatTm  - Maturity  Time  FIXML/Batch/Hdr@Snt 
+FIXML/Batch/PosRpt@BizDt FIXML/Batch/PosRpt/Instrmt@MatTm  
+3. Numeric or 
+decimal(10): 
+These ﬁelds 
+must be 
+numeric.  @TotMsg  - Total  Message  Count 
+@StrkPx - Strike Price  
+Qty@Long - Position Long 
+Qty@Short - Position Short  FIXML/Batch@TotMsg 
+FIXML/Batch/PosRpt/Instrmt@StrkPx 
+FIXML/Batch/PosRpt/Qty@Long 
+FIXML/Batch/PosRpt/Qty@Short  
+4. Other 
+Miscellaneous: 
+These ﬁelds 
+must  follow the 
+format as 
+described  in the 
+Data  Dictionary. @MMY – Contract Date  Undly@MMY  - 
+Settlement Instrument - Contract Date  
+@Actn - Record Type (Action) 
+@PutCall – Option Type  Qty@Typ  - 
+Type  of position  reported.  FIXML/Batch/PosRpt/Instrmt@MMY 
+FIXML/Batch/PosRpt/PosUnd/Undly@M 
+MY 
+FIXML/Batch/PosRpt@Actn 
+FIXML/Batch/PosRpt/Instrmt@PutCall 
+FIXML/Batch/PosRpt/Qty@Typ 
+5. Mis-Spellings  or 
+incomplete The attribute  is not declared.  This is a mis-spelled  attribute  or missing 
+tag. 
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 57 of 113 
+XML.  
+ 
+ 
+Below  are examples of some  of the schema  errors  veriﬁed  and a sample  message  from  each:  
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 58 of 113 
+ 
+ 
+ 
+ 
+   
+ 
+
+Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ Page 59 of 113 
+ 
+ 
+ 
+   
+ 
+
+Page  60 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+ 
+ 
+B-2: Primary  Data  Validation Rules  for Large Trader  Position Report  (LTPOS)  
+ 
+The DD Lnk column  is a reference  to the  Item  Number  in the Data  Dictionary. The  FIXML  conditions  that the @MsgTyp  must  be “AP”  apply  to all data  elements.  The data  will be checked for the following:  
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+1 Positions Report 
+Header 
+Required Fields.  N/A The header must contain the 
+following fields: @TotMsg - 
+Total Message Count  
+@MsgTyp - FIXML Message 
+Type  
+@SID - Sender ID  
+@TID - To ID  
+@Snt - Message Transmit 
+Datetime  FIXML/Batch@TotMsg  
+FIXML/Batch/Hdr@MsgTyp  
+FIXML/Batch/Hdr@SID  
+FIXML/Batch/Hdr@TID  
+FIXML/Batch/Hdr@Snt   Item 1  
+Item 2  
+Item 3  
+Item 4  
+Item 5  
+2 The Total 
+Message Count 
+must equal number of messages 
+submitted. N/A The Total Message Count does 
+not equal the number of 
+records loaded.  
+@TotMsg - Total Message 
+Count  FIXML/Batch@TotMsg    Item 1  
+Page  61 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+3 The String value 
+field length does 
+not conform to 
+maximum  
+allowed length.  N/A The size of following string 
+field(s) does not conform to 
+maximum allowed length. 
+Please retransmit an updated 
+Part 17 FIXML file. The data 
+field(s) with issue are: 
+[attribute] is greater than [max 
+length]. The value provided is: 
+[value provided]  FIXML/Batch/ PosRpt@RptID  
+FIXML/Batch/PosRpt/Pty@ID (Src=M/R=116)  
+FIXML/Batch/PosRpt/Pty@ID (Src=N/R=89)  
+FIXML/Batch/PosRpt/Pty@ID (Src=D/R=89)  
+FIXML/Batch/PosRpt/Instrmt@Exch 
+FIXML/Batch/PosRpt/Instrmt@ID  
+FIXML/Batch/PosRpt/Instrmt@SecTyp 
+FIXML/Batch/PosRpt/Instrmt@Sym  
+FIXML/Batch/PosRpt/Instrmt@AlphaStrk  
+FIXML/Batch/PosRpt/Instrmt@PutCall  
+FIXML/Batch/PosRpt/PosUnd/Undly@ID  
+FIXML/Batch/PosRpt/PosUnd/Undly@Src  
+FIXML/Batch/PosRpt/PosUnd/Undly@MMY  
+FIXML/Batch/PosRpt /Instrmt/ AID@AltID  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Item 6  
+Item 9  
+Item 10 
+Item 11  
+Item 12 
+Item 13 
+Item 14 
+Item 15 
+Item 2 1 
+Item 26 
+Item 30 
+Item 30 
+Item 31 
+Item 54 
+Page  62 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+4 The Numeric 
+value field length 
+does not 
+conform to maximum  
+allowed length.  N/A The data in the numeric field(s) 
+does not conform to Data 
+Dictionary and cannot be 
+accepted. Please retransmit an updated Part 17 FIXML file. The data field(s) with issue are: [attribute] value does not 
+conform to numeric datatype as 
+defined in the guidebook.  The value provided is: [value provided]  FIXML/Batch/PosRpt/Instrmt@ StrkPx  
+FIXML/Batch/PosRpt /Instrmt@CapPx  
+FIXML/Batch/PosRpt  /Instrmt@FlrPx  
+FIXML/Batch/PosRpt/ 
+Instrmt/CmplxEvnt/@Typ  
+FIXML/Batch/PosRpt/ Instrmt/CmplxEvnt@Px  
+FIXML/Batch/PosRpt/Instrmt@PutCall  
+FIXML/Batch/PosRpt/Instrmt@ExerStyle  
+FIXML/Batch/PosRpt/Instrmt@OptPayoutTyp  
+FIXML/Batch/PosRpt/Instrmt@OptPay Amt  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Long  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Short  
+Position Type (703) FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long   Item 20  
+Item 22 
+Item 23 Item 24  Item 25 
+Item 26 
+Item 27 Item 29 Item 30 Item 32  Item 33  
+Item 34 
+Item 35 Item 36 
+Item 37 Item 38 
+Page  63 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Long  
+FIXML/Batch/PosRpt/Qty@Short  
+FIXML/Batch/PosRpt/Qty@Short  Item 39  
+Item 40 
+Item 41 Item 42 Item 43 Item 44 
+Item 45 
+Item 46 Item 47 Item 48 Item 49 Item 50 Item 51 Item 52 
+Item 53 
+ 
+Page  64 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+5 The Date value 
+field does not 
+conform to 
+DateTime 
+datatype. N/A The data in the date field(s) 
+does not conform to Data 
+Dictionary and cannot be 
+accepted. Please retransmit an 
+updated Part 17 FIXML file. 
+The data field(s) with issue are: 
+[attribute] value does not 
+conform to Date Datatype. The 
+value provided is: [value 
+provided]  FIXML/Batch/PosRpt@BizDt  
+FIXML/Batch/PosRpt/Instrmt@MMY  
+FIXML/Batch/PosRpt/Instrmt@MatTm  
+FIXML/Batch/PosRpt/Instrmt@Issued  
+FIXML/Batch/PosRpt/Instrmt/Evnt@Dt  
+FIXML/Batch/PosRpt/PosUnd/Undly@MMY  
+  Item 8  
+Item 1 6 
+Item 17 
+Item 18 
+Item 19 
+Item 31 
+ 
+6 UIC without 
+other required 
+attributes for key.  UIC without one of the required 
+attributes for key. Must include UIC, Exchange Code, Report 
+Date,
+ Reporting Firm ID  and 
+Account ID . 
+ FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(455)  
+(@AltIDSrc=8)(456)  
+FIXML/Batch/PosRpt/Instrmt@Exch 
+FIXML/Batch/PosRpt@BizDt FIXML/Batch/PosRpt/Pty@ID (Src M) FIXML/Batch/PosRpt/Pty@ID (Src D)   Item 54  
+Item 12 Item 8  
+Item 9  
+Item 11  
+Page  65 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+7 The combination 
+of UIC and 
+Exchange Code, 
+Report Date, 
+Reporting Firm 
+ID and Account 
+ID must be 
+unique. This is 
+duplicate check.  
+ N/A The file contains duplicate 
+combination UIC,Exchange 
+Code,Report Date,  Reporting 
+Firm ID  and Account ID . 
+ [Message #]: @ AltID=value, 
+@Exch= value, @ BizDt = 
+value, @ Pty@ID (Src M) = 
+value, @ Pty@ID (Src D). 
+ FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(455)  
+(@AltIDSrc=8)(456)  
+FIXML/Batch/PosRpt/Instrmt@Exch 
+FIXML/Batch/PosRpt@BizDt 
+FIXML/Batch/PosRpt/Pty@ID (Src M) 
+FIXML/Batch/PosRpt/Pty@ID (Src D) 
+ FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(455)  
+(@AltIDSrc=8)(456) exists  Item 54  
+Item 12 
+Item 8  
+Item 9  
+Item 11  
+8 The composite 
+key for futures 
+does not include required attributes.   Futures composite Key does 
+not  include one of the required 
+attributes for key. Must Include each of the following  
+@BizDt - Report Date 
+(Pty@ID, @Src=M, @R=116) - Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - Account ID  
+Instrmt@Exch - Exchange 
+Code  
+Instrmt@ID - Product Code  The FIXML reference id fields used are 
+listed in Sec. 3. 10.1, Large Trader FIXML 
+Reference ID.  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+ No UIC and SecTyp equal to FUT   
+Page  66 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+Instrmt@SecTyp - Product 
+Type  
+Instrmt@Sym - Instrument 
+Code  
+@MMY - Contract Date  
+9 The composite 
+key combination 
+of reference key  
+must be unique 
+for futures.  This 
+is duplicate 
+check within the 
+file. N/A There are multiple records with 
+the same reference keys. This 
+can happen when records are 
+not aggregated. The 
+combination of the following 
+Large Trader Position  future 
+values are not distinct in each 
+record.  
+@BizDt - Report Date 
+(Pty@ID, @Src=M, @R=116) - 
+Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - 
+Account ID  
+Instrmt@ID – Product Code  
+Instrmt@Sym – Instrument 
+Code  
+@MMY – Contract Date 
+@Exch - Exchange Code  The FIXML reference id fields used are 
+listed in Sec. 3. 10.1, Large Trader FIXML 
+Reference ID.  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+FIXML/Batch/PosRpt /Instrmt/ SecTyp=FUT  
+  
+Page  67 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+10 The composite 
+key for options 
+does not include 
+required attributes.  N/A Options composite Key does 
+not  include one of the required 
+attributes for key. Must Include 
+each of the following  
+@BizDt - Report Date 
+(Pty@ID, @Src=M, @R=116) - Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - Account ID  
+Instrmt@Exch -  Exchange 
+Code  
+Instrmt@ID - Product Code  
+Instrmt@SecTyp - Product 
+Type  
+Instrmt@Sym - Instrument 
+Code  
+Instrmt@MMY - Contract Date  
+Instrmt@PutCall - Option Type 
+Instrmt@ExerStyle - Option 
+Expiration Type The FIXML reference id fields used are 
+listed in Sec. 3. 10.1, Large Trader FIXML 
+Reference ID.  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+No UIC and SecTyp not equal to FUT   
+Page  68 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+11 The composite 
+key combination 
+of reference key 
+must be unique 
+for options.  This 
+is duplicate 
+check within the 
+file. N/A There are multiple records with 
+the same reference keys. This 
+can happen when records are 
+not aggregated. The 
+combination of the following 
+Large Trader Position option 
+values are not distinct in each 
+record.  
+@BizDt - Report Date 
+(Pty@ID, @Src=M, @R=116) - 
+Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - 
+Account ID  
+Instrmt@Exch - Exchange 
+Code  
+Instrmt@ID – Product Code  
+Instrmt@SecTyp - Product 
+Type  
+Instrmt@Sym – Instrument 
+Code  
+Instrmt@MMY – Contract Date 
+Instrmt@MatTm - Maturity 
+Time  
+Instrmt@Issued - Lisiting Date  The FIXML reference id fields used are 
+listed in Sec. 3. 10.1, Large Trader FIXML 
+Reference ID.  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+No UIC and SecTyp not equal to FUT   
+ 
+Please refer to Strike Level, Cap Level, 
+Floor and Alpha Strike truth table after this 
+validation section.   
+Page  69 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+Instrmt@PutCall – Option Type  
+Instrmt@ExerStyle - Option 
+Expiration Type 
+(Instrmt/Evnt@EventTyp=25 
+Instrmt/Evnt@Dt - First 
+Exercise Date)  
+Instrmt@StrkPx - Strike Level  
+Instrmt@AlphaStrk - Alpha 
+Strike 
+Instrmt@CapPx - Cap Level  
+Instrmt@FlrPx - Floor Level  
+((Strike Level or (Cap Level  
+And/or Floor Level ) ) or Alpha 
+Strike) 
+Instrmt/CmplxEvnt@Typ - 
+Bound or Barrier Type  
+Instrmt/CmplxEvnt@Px - 
+Bound or Barrier Level  
+Instrmt@OptPayAmt - Payout 
+Amount  
+Instrmt@OptPayoutTyp - 
+Payout Type  
+Page  70 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+ 
+12 End-of-Day 
+Options 
+Positions Report Required Fields.  
+ 
+ N/A If the instrument is an option, 
+then the following fields must 
+be provided:  
+@RptID - Report ID  
+@Actn - Record Type (Action) 
+@BizDt - Report Date  
+(Pty@ID, @Src=M, @R=116) - Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - Account ID  
+@Exch - Exchange Code  
+(Instrmt@ID, @Src=H ) – 
+Product Code  
+(Instrmt@Sym) – Instrument 
+Code  
+@MMY – Contract Date  
+@StrkPx , @CapPx , @FlrPx , 
+@AlphaStrk  - (
+Strike Level 
+or (Cap Level  And/or Floor  
+Level ) ) or Alpha Strike  FIXML/Batch/PosRpt@RptID  
+FIXML/Batch/PosRpt@Actn 
+FIXML/Batch/PosRpt@BizDt FIXML/Batch/PosRpt/Pty (@ID, @Src=M, @R=116)  
+FIXML/Batch/PosRpt/Pty (@ID, @Src=D, @R=89)  
+FIXML/Batch/PosRpt/Instrmt@Exch 
+FIXML/Batch/PosRpt/Instrmt( @ID, 
+@Src=H)  
+FIXML/Batch/PosRpt/Instrmt@ Sym 
+FIXML/Batch/PosRpt/Instrmt@MMY 
+FIXML/Batch/PosRpt/Instrmt@StrkPx  
+FIXML/Batch/PosRpt /Instrmt@CapPx  
+FIXML/Batch/PosRpt /Instrmt@FlrPx 
+FIXML/Batch/PosRpt/Instrmt@AlphaStrk 
+FIXML/Batch/PosRpt/Instrmt@PutCall  
+FIXML/Batch/PosRpt /Instrmt@ExerStyle 
+FIXML/Batch/PosRpt/Qty@Typ=[  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+FIXML/Batch/PosRpt/Instrmt@ SecTyp not 
+equal to FUT  
+ 
+Please refer to Strike Level, Cap Level, 
+Floor and Alpha Strike truth table after this 
+validation section.  Item 6  
+Item 7  
+Item 8  
+Item 9 
+Item 11  
+Item 12 Item 13 
+Item 16 
+Item 20 
+Item 22 
+Item 23 
+Item 21 
+Item 26 FIN = Items 
+32, 33  
+TOT= Items 34,35  
+EXP = Items 
+44, 45  
+Page  71 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+@PutCall – Option Type  
+([0=Put | 1=Call])  
+Instrmt@ExerStyle - Option 
+Expiration Type 
+Qty@Typ – Type of Contract 
+Defined  
+ (There must be at least one 
+contract type reported.  For the 
+reported Qty, both @Long and @Short must be defined,  
+populate ‘0’ for null values. ) 
+Qty@Long - Position Long 
+Qty@Short - Position Short  
+List the Specific required fields 
+which are missing.  FIN,TOT,EO,EXP,EX,TRF and RCV ] 
+FIXML/Batch/PosRpt/Qty@Long 
+FIXML/Batch/PosRpt/Qty@Short  TRF = Items 
+50, 52  
+RCV = Items 51, 53  
+EO= Items 40,41  
+EX= Items 46,47 
+ 
+Page  72 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+13 End-of-Day 
+Futures 
+Positions Report 
+Required Fields.  N/A If the instrument is a future, 
+then the following fields must 
+be provided:  
+@RptID - Report ID  
+@Actn - Record Type (Action) 
+@BizDt - Report Date  
+(Pty@ID, @Src=M, @R=116) - 
+Reporting Firm ID  
+(Pty@ID, @Src=D, @R=89) - 
+Account ID  
+@Exch - Exchange Code  
+(Instrmt@ID, @Src=H ) – 
+Product Code  
+(Instrmt@Sym) – Instrument 
+Code  
+@MMY – Contract Date 
+Qty@Typ – Type of Contract 
+Defined  
+ (There must be at least one 
+contract type reported.  For the 
+reported Qty, both @Long and 
+@Short must be defined,  
+populate ‘0’ for null values.  ) 
+Qty@Long - Position Long 
+Qty@Short - Position Short  
+List the Specific required fields 
+which are missing.  FIXML/Batch/PosRpt@RptID 
+FIXML/Batch/PosRpt@Actn 
+FIXML/Batch/PosRpt@BizDt 
+FIXML/Batch/PosRpt /Pty (@ID, @Src=M, 
+@R=116)  
+FIXML/Batch/PosRpt/Pty (@ID, @Src=D, 
+@R=89)  
+FIXML/Batch/PosRpt/Instrmt@Exch 
+FIXML/Batch/PosRpt/Instrmt ( @ID 
+@Src=H)  
+FIXML/Batch/PosRpt/Instrmt@ Sym 
+FIXML/Batch/PosRpt/Instrmt@MMY  
+FIXML/Batch/PosRpt/Qty@Typ=[  
+FIN,TOT,EP,ES,DN,AS,TRF and RCV ] 
+FIXML/Batch/PosRpt/Qty@Long 
+FIXML/Batch/PosRpt/Qty@Short  FIXML/Batch/ PosRpt /Instrmt/AID@AltID  
+(@AltIDSrc=8)  does not exist. This is the 
+UIC. 
+FIXML/Batch/PosRpt/Instrmt@ SecTyp  
+equal to FUT. This validation is for a futures 
+contract.  Item 6  
+Item 7  
+Item 8  
+Item 9 
+Item 11  
+Item 12 
+Item 13 
+Item 16 
+FIN =  
+Items 32, 33  
+TOT=Items 
+34,35  
+EP=Items 
+36,37 
+ES=Items 
+38, 39  
+AS = Items 
+48, 48  
+TRF = Items 
+50, 52  
+RCV = Items 
+51, 53  
+DN=Items 
+42,43  
+Page  73 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+14 Unrecognized 
+Quantity Position 
+Type reported for 
+options.  Only FIN, TOT, 
+EX, EXP, TRF, 
+RCV and EO 
+can be reported 
+for options.  For the Large Trader Position 
+Report, only End of Day (FIN) , 
+Total Quantity of Contracts (TOT), Options Exercised (EX), 
+Option Positions Expired(EXP),
+ 
+Transfers (TRF), 
+Received(RCV)  and 
+Exchanges for Options (EO) positions can be reported for Options.  
+At most one Instance of each Quantity Type.  
+Qty@Typ = "FIN" - End of Day 
+Position Long and Short  
+Qty@Typ = "TOT" – Contracts 
+Bought and Sold  
+Qty@Typ = " EX" – Options 
+Exercised  
+Qty@Typ = " EXP" – Option 
+Positions Expired  
+ Qty@Typ = " TRF" – Transfers  
+Qty@Typ = " RCV" – Received 
+Qty@Typ = "EO" - Exchanges 
+for Options Bought and Sold  FIXML/Batch/PosRpt/Qty@Typ  FIXML/Batch/PosRpt/Instrmt@ SecTyp not 
+equal to FUT , FIXML/Batch/PosRpt/ 
+Qty@Typ='not null'  FIN = Items 
+32, 33  
+TOT = Items 
+34, 35  
+EX = Items 
+46, 47 
+EXP = Items 
+44, 45 
+TRF = Items 
+50, 52 
+RCV  = Items 
+51, 53 
+EO = Items 40, 41  
+Page  74 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+15 Unrecognized 
+Quantity Position 
+Type reported for 
+futures.  Only FIN, TOT, 
+EP, 
+ES,AS,TRF,RCV  
+and DN can be 
+reported for 
+futures.  For the Large Trader Position 
+Report, only End of Day (FIN), 
+Total Quantity of Contracts 
+(TOT), Exchanges for 
+Physicals (EP), Exchanges for 
+Swaps (ES), Futures Assigned 
+(AS), Transfers (TRF), 
+Received(RCV) and Delivery 
+notices (DN) can be reported 
+for futures.  
+At most one Instance of each 
+Quantity Type.  
+Qty@Typ = "FIN" - End of Day 
+Position Long and Short  
+Qty@Typ = "TOT" – Contracts 
+Bought and Sold  
+Qty@Typ = "EP" - Exchanges 
+for Physicals Bought and Sold  
+Qty@Typ = "ES" - Exchanges 
+for Swaps Bought and Sold  
+Qty@Typ = " AS" – Futures 
+Assigned 
+Qty@Typ = " TRF" – Transfers  
+Qty@Typ = " RCV" – Received 
+ 
+Qty@Typ = "DN" - Delivery 
+notices Issued and Stopped  FIXML/Batch/PosRpt/Qty@Typ  FIXML/Batch/PosRpt/Instrmt@ SecTyp 
+equal to FUT , FIXML/Batch/PosRpt/ 
+Qty@Typ ='not null'  FIN = Items 
+32, 33  
+TOT = Items 
+34, 35  
+EP = Items 
+36, 37  
+ES = Items 
+38, 39  
+AS = Items 
+48, 48 
+TRF = Items 
+50, 52 
+RCV  = Items 
+51, 53 
+ 
+DN = Items 
+42, 43  
+Page  75 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+16 Position 
+attempting to 
+add a lready 
+exists 
+ N/A The Add request cannot be 
+processed because a matching position already exists . 
+Include all key values in this 
+error message.  The FIXML fields used are listed in Sec. 
+3.10.1, Large Trader FIXML Reference ID.    
+17 Position 
+attempting to 
+update/delete 
+does not exist.   The Change/Delete request 
+cannot be processed because 
+no matching position was 
+found.  
+Include all key values in this 
+error message.  The FIXML fields used are listed in Sec. 
+3.10.1, Large Trader FIXML Reference ID.    
+18 Report ID must  
+be unique within the file.  Report ID is not unique within 
+the file. 
+@RptID  
+  FIXML/Batch/PosRpt@RptID   
+19 Product Code 
+(Instrument ID)  
+Source value 
+must be ‘H’ Only H  The commodity code for the 
+futures or options contract  is 
+not clearinghouse-assigned.  
+@Src FIXML/Batch/PosRpt/Instrmt@Src   Item 13  
+20 If Settlement 
+Instrument – 
+Product Code(Underlying Instrument ID)   
+is provided then Only H  The underlying  commodity 
+code for the futures or options contract  is not clearinghouse-
+assigned.  
+@Src FIXML/Batch/PosRpt/PosUnd/Undly@Src   Item 30 
+Page  76 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+the Source value 
+must be ‘H’ 
+21 The Record 
+Type value must 
+be either 1, 2 or 
+3. Only 1, 2 or 3  The Record Type doesn’t 
+contain valid enumeration as 
+per the data dictionary.  
+@Actn - Record Type (Action)  
+ FIXML/Batch/PosRpt@Actn   Item 7  
+22 The Product 
+Type value must 
+be either FUT, 
+OOF, OOC or CMDTYSWAP. Only FUT, OOF, 
+OOC or 
+CMDTYSWAP. The Product Type doesn’t 
+contain valid enumeration as per the data dictionary.  
+@SecTyp - Product Type 
+(Security Type ) 
+ FIXML/Batch/PosRpt/Instrmt@SecTyp   Item 14  
+23 The Put or Call 
+Indicator value  
+must be either 1 
+or 0 for Options  Only 1 or 0  The Put Call Indicator doesn’t 
+contain valid enumeration as 
+per the data dictionary.  
+@PutCall  – Put Call Indicator  
+ FIXML/Batch /PosRpt/Instrmt@PutCall  FIXML/Batch/PosRpt/Instrmt@ SecTyp 
+equal to OOF, OOC or CMDTYSWAP . Item 26  
+Page  77 of 113 Commodity Futures Trading C ommission  
+Division of Data Guidebook for Part 17 
+ 
+ 
+Item  Rule 
+Description  Valid Values  Error Message  FIXML Path  FIXML Condition  DD Lnk  
+24 The Report Date 
+cannot be 
+greater than the 
+file processing date i.e. today  
+ 
+  The Report Date is greater 
+then current business date.  
+@BizDt  
+ FIXML/Batch/PosRpt@BizDt   Item 8  
+25 The report date 
+in the file name 
+must match with 
+report date 
+inside the file.    The Report Date in the file 
+name doesn’t match report 
+date in the file.   
+@BizDt  FIXML/Batch/PosRpt@BizDt   Item 8  
+ 
+Strike Level  , Cap  Level , Floor Level and Alpha Level Truth Table  
+Strike Level  Alpha  Cap Floor  OK 
+Y N N N Y 
+Y N Y Y Y 
+Y N Y N Y 
+Y N N Y Y 
+N N Y Y Y 
+N Y N N Y 
+ 
+ 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  78 of 113  
+  
+Appendix  C: Annotated  Examples and Working  Samples  
+ 
+C-1: Large  Trader  
+ 
+C-1-1 : FIXML  Position  Report  With  Explanatory Annotations  (former  80-byte  RP/EP/DN  records):  
+ 
+<?xml version="1.0" encoding="UTF -8"?> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="1 "> 
+<!-- Message Header Information  
+@MsgTyp = [FIXML Message Type] (AP =Position Report) 
+@SID = [CFTC Reporting Firm Identitifier | Servicing Firm Identifier](  Use CFTC-issued Reporting  ID. The Servicing firm identifier is provided 
+when reporting on -behalf-of the exchange)  
+@TID = [To ID = ‘CFTC’] 
+@Snt = [Message Transmit  Datetime] (format is [Date]+"T"+[Time]+[TZ Offset]; YYYY-MM-DDThh:mm:ss[+| -]hh:mm)--> 
+<Hdr MsgTyp="AP" SID="[CFTC-Issued Reporting ID or name of servicing firm]" TID="CFTC" Snt="2012-09-14T09:30:47 -06:00"/>  
+<!-- Position  Information 
+@RptID = [Report Identifier]  
+@BizDt = [Report Date] (format is YYYY-MM-DD) 
+@Actn = [1 = Add | 2 = Change | 3 = Delete] --> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  79 of 113  
+ <PosRpt RptID="0" BizDt="2012-09-13" Actn="1"> 
+<!-- Large Trader Information  
+@ID = [Large Trader Identifier] (Use CFTC-issued code.) 
+@Src = M (M=CFTC- Issued Identifier)  
+@R = 116 (116 = Reporting Entity) --> 
+<Pty ID="[Use CFTC-issued identifier]"  Src="M" R="116"/>  
+<!-- Position  Account Information 
+@ID = [Position Account Identifier]  
+@Src = D (D = Proprietary or custom identifier)  
+@R = 89 (89 = Larger Position Reporting Account) --> 
+<Pty ID="[ Position Account Identifier] " Src="D" R="89"/> 
+ 
+<!-- Large Trader LEI 
+@ID = [Large Trader LEI]  
+@Src = N (N = Legal entity identifier) 
+ 
+@R = 89 (89 = Large Position Reporting Account) --> 
+<Pty ID="[Large Trader LEI]" Src="N" R="89"/> 
+<!-- Contract Information 
+@ID = [Product Code ] 
+@Src = H (1 = CUSIP, 2 = SEDOL, 3 = QUIK, 4 = ISIN number, 5 = RIC code, 6 = ISO Currency Code, 7 = ISO Country Code, 
+8 = Exchange Symbol, 9 = Consolidated Tape Association (CTA) Symbol (SIAC CTS/CQS line format), A = Bloomberg 
+Symbol, B = Wertpapier, C = Dutch, D = Valoren, E = Sicovam,  F = Belgian,  G = Common (Clearstream and Euroclear), 
+H = Clearing House / Clearing Organization, I = ISDA/FpML Prod XML, J = Option Price Reporting Authority,  
+K = ISDA/FpML Prod URL, L = Letter of Credit, M = Marketplace -assigned Identifier , S = FIGI)  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  80 of 113  
+ @MMY = [Contract Date ](futures delivery year and month or options expiration year and month) 
+formats YYYYMM for month, YYYYMMDD for day, YYYYMMwN for week. A 
+specific date 
+or can be appended to the MaturityMonthYear. For instance, if multiple  standard products exist that mature in the same 
+Year and Month, but actually mature at a different time, a value can be appended, such as "w" or "w2" to indicate week 
+as opposed to week 2 expiration. Likewise, the date (0- 3) can be appended to indicate a specific expiration (maturity 
+date). 
+@StrkPx = [Strike Price] (for options only, format decimal number, e.g., 0.0000000000; ) 
+@PutCall = [ Option Type ] (0 = Put, 1 = Call; only used for Options)  
+@Exch = [Exchange Code] ) --> 
+<Instrmt ID="String" Src="H" MMY="201210" StrkPx="0.0000000000 " PutCall=" 0" Exch="[Use ISO code.]"/>  
+<!-- Settlement Instrument  Position Information --> 
+<PosUnd> 
+<!-- Settlement Instrument Contract Information  
+@ID = [Settlement Instrument –  Product Code = Cleared Product ID] 
+@Src = H (1 = CUSIP, 2 = SEDOL, 3 = QUIK, 4 = ISIN number, 5 = RIC code, 6 = ISO Currency Code, 7 = ISO Country Code, 
+8 = Exchange Symbol, 9 = Consolidated Tape Association (CTA) Symbol (SIAC CTS/CQS line format), A = Bloomberg Symbol, B = Wertpapier, C = Dutch, D = Valoren, E = Sicovam,  F = Belgian,  G = Common (Clearstream and Euroclear), 
+H = Clearing House / Clearing Organization, I = ISDA/FpML Prod XML, J = Option Price Reporting Authority,  
+K = ISDA/FpML Prod URL, L = Letter of Credit, M = Marketplace- assigned  Identifier, S = FIGI) 
+@MMY = [Settlement Instrument - Contract Date ]. (formats YYYYMM for month, YYYYMMDD  for day, YYYYMMwN for week.) A specific  
+date or can be appended to the MaturityMonthYear. For instance, if multiple standard  products exist that mature in 
+the same Year and Month, but actually mature at a different time, a value can be appended, such as "w" or "w2" to  
+indicate week as opposed to week 2 expiration. Likewise, the date (0- 3) can be appended to indicate a specific 
+expiration (maturity date). --> 
+<Undly ID="String" Src="H" MMY="201210"/>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  81 of 113  
+ </PosUnd>  
+<!--Total Open Contracts  Carried Information 
+@Typ = FIN (FIN = Final Quantity)  
+@Long = [Total Long Open Contracts] (format integer number, e.g., 0) 
+ 
+@Short = [Total Short Open Contracts] (format integer number, e.g., 0)--> 
+<Qty Typ="FIN" Long="0" Short="0"/> 
+<!--Total Bought Sold Information 
+@Typ =TOT (TOT = Total Bought Sold)  
+@Long = [Total Long Contracts Bought] (format integer  number, e.g., 0) @Short  = [Total 
+Short Contracts Sold] (format integer number, e.g., 0)--> 
+<Qty Typ="TOT" Long="572" Short="802"/> 
+<!--Total Contracts Exchanged for Cash Futures Information 
+@Typ = EP (EP = Exchanged for Physical)  
+@Long = [Total EP Contracts Bought] (format integer  number, e.g., 0) @Short = 
+[Total EP Contracts Sold] (format integer number, e.g., 0)--> 
+<Qty Typ="EP" Long="0" Short="0 "/> 
+<!--Total Contracts Exchanged Swaps Information 
+@Typ = ES (ES = Exchanged for Swaps)  
+@Long = [Total ES Contracts Bought] (format integer  number, e.g., 0) @Short = 
+[Total ES Contracts Sold] (format integer number, e.g., 0)--> 
+<Qty Typ="ES" Long="0" Short="0 "/> 
+<!--Total Contracts Exchanged Options Information 
+@Typ = EO (EO = Exchanged for Options)  
+@Long = [Total EO Contracts Bought] (format integer  number, e.g., 0) @Short = 
+[Total EO Contracts Sold] (format integer number, e.g., 0)--> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  82 of 113  
+ <Qty Typ="EO" Long="0" Short="0 "/> 
+<!--Total Contracts with Delivery Notices Issued or Stopped Information 
+@Typ = DN (DN = Delivery Notice)  
+@Long = [Total DN Stopped Contracts]  (format integer number, e.g., 0) 
+@Short = [Total DN Stopped Issued Contracts] (format integer number, e.g., 0)--> 
+<Qty Typ="DN" Long="0" Short="0 "/> 
+</PosRpt>  
+</Batch></FIXML>   
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  83 of 113  
+  
+C-1-2 : Example Large  Trader  Position  Report  (LTPOS)  
+ 
+Message 
+Container 
+Open  <?xml  version="1.0"  encoding="UTF -8"?>  
+<!--Sample XML file generated by XMLSpy v2014 rel. 2 sp1 (x64)  (http://www.altova.com) --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch TotMsg="17"> 
+ 
+Header <Hdr MsgTyp="AP" SID="ZZZ" TID="CFTC" Snt="2016-03-02T09:30:47Z"/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  84 of 113  
+ Futures 
+Positions   <PosRpt RptID="1" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>                   
+                <Qty Typ="FIN"  Long ="10"  Short ="20"/>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="ES" Long="40" Short="30 "/> 
+<Qty Typ="EP" Long="50" Short="60 "/> 
+<Qty Typ="DN" Long="80" Short="70 "/> 
+       <Qty Typ="TRF" Long="45" Short="35"/> 
+</PosRpt> 
+<PosRpt RptID="2" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705" Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  85 of 113  
+ <AID AltID="XX" AltIDSrc ="8"/> 
+</Instrmt>  
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+       <Qty Typ="TRF" Long="45" Short="35"/></PosRpt>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  86 of 113  
+  <PosRpt RptID="3" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="ES" Long="40" Short="30 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="4" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="EP" Long="50" Short="60 "/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  87 of 113  
+ </PosRpt> 
+ 
+<PosRpt RptID="5" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="DN" Long="80" Short="70 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="6" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp="FUT" Sym="ABC"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  88 of 113  
+ <Qty Typ="FIN" Long="10" Short="20"/> 
+<Qty Typ="ES" Long="40" Short="30 "/> 
+ 
+ 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  89 of 113  
+  </PosRpt>  
+ 
+<PosRpt RptID="7" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp=”FUT” Sym=” ABC” > 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="EP" Long="50" Short="60 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="8" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  90 of 113  
+ <Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp=”FUT” Sym=” ABC” > 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="DN" Long="80" Short="70 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="9" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp=”FUT” Sym=” ABC” /> 
+<AID AltID="XX" AltIDSrc="8"/>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="ES" Long="40" Short="30 "/> 
+<Qty Typ="EP" Long="50" Short="60 "/> 
+</PosRpt>  
+<PosRpt RptID="10" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  91 of 113  
+  
+ 
+ <Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp=”FUT” Sym=” ABC” > 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="ES" Long="40" Short="30 "/> 
+<Qty Typ="DN" Long="80" Short="70 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="11" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " Exch="XCBT" SecTyp=”FUT” Sym=” ABC” /> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  92 of 113  
+  <Qty Typ="TOT" Long="10" Short="20"/> 
+<Qty Typ="EP" Long="50" Short="60 "/> 
+<Qty Typ="DN" Long="80" Short="70 "/> 
+</PosRpt>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  93 of 113  
+  
+Option on 
+Futures  
+or other 
+Derivative 
+Contract 
+Positions  <PosRpt RptID="12" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " StrkPx="3" PutCall="0" Exch="XCBT" SecTyp=”OOF”  Sym=” ABC”  
+Issued=”YYYY -MM- DD” CapPx="10"  FlrPx="2"  ExerStyle =”1”  OptPayAmt=”10”  OptPayoutTyp=”3”   /> 
+<AID AltID="XX" AltIDSrc="8"/>  
+<Evnt EventTyp="25" Dt="YYYY -MM-DD"> 
+<CmplxEvnt Typ="3" Px=”4” /> 
+</Instrmt> 
+      <PosUnd> 
+<Undly ID="S" Src="H" MMY="201705"/> 
+</PosUnd>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="EO" Long="40" Short="30 "/> 
+ <Qty Typ="EXP" Long="40"  Short="30"/> 
+ <Qty Typ="EX" Long="50" Short="25 "/> 
+ <Qty Typ="TRF" Long="45"  Short="35"/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  94 of 113  
+ </PosRpt 
+ 
+<PosRpt RptID="13" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="S" Src="H" MMY="201705 " StrkPx="3" PutCall="0" Exch="XCBT" SecTyp=”OOF”  Sym=” ABC”  
+Issued=”YYYY -MM- DD” CapPx="10"  FlrPx="2"  ExerStyle =”1”  OptPayAmt=”10”  OptPayoutTyp=”3”  > 
+<AID AltID="XX" AltIDSrc="8"/>  
+<Evnt EventTyp="25" Dt="YYYY -MM-DD"/> 
+<CmplxEvnt Typ="3" Px=”4” /> 
+</Instrmt> 
+<PosUnd> 
+<Undly ID="S" Src="H" MMY="201705"/> 
+</PosUnd>  
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="14" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  95 of 113  
+ <Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt Sym="OZS" ID="S" Src="H" MMY="201705" StrkPx="3 " PutCall=" 0" Exch="XCBT" SecTyp=”OOF”  
+Sym=” ABC”  Issued=”YYYY -MM- DD” CapPx="10"  FlrPx="2"  ExerStyle =”1”  OptPayAmt=”10”  OptPayoutTyp=”3”  > 
+<AID AltID="XX" AltIDSrc="8"/>  
+<Evnt EventTyp="25" Dt="YYYY -MM-DD"/> 
+<CmplxEvnt Typ="3" Px=”4” />         </Instrmt> 
+<PosUnd> 
+<Undly ID="S" Src="H" MMY="201705"/> 
+</PosUnd>  
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="EO" Long="40" Short="30 "/> 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  96 of 113  
+  
+ </PosRpt> 
+ 
+<PosRpt RptID="15" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="31" Src="H" MMY="201705" StrkPx="0.52" PutCall="0" Exch="XCBT" SecTyp=”OOF”  
+Sym=” ABC”  Issued=”YYYY -MM- DD” CapPx="10"  FlrPx="2"  ExerStyle =”1”  OptPayAmt=”10”  
+OptPayoutTyp=”3”   > 
+              <AID AltID="XX" AltIDSrc="8"/>  
+              <Evnt EventTyp ="25" Dt="YYYY -MM-DD"/> 
+                            <CmplxEvnt Typ="3" Px=”4” />  
+ </Instrmt>  
+                    < PosUnd> 
+<Undly ID="31" Src="H" MMY="201705"/> 
+</PosUnd>  
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+</PosRpt>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  97 of 113  
+ <PosRpt RptID="16" BizDt="2017-02-13" Actn="1" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="31" Src="H" MMY="201705" StrkPx="0.52" PutCall="0" Exch="XCBT" SecTyp=”OOF”  
+Sym=” ABC”  Issued=”YYYY -MM- DD” CapPx="10"  FlrPx="2"  ExerStyle =”1”  OptPayAmt=”10”  
+OptPayoutTyp=”3”    > 
+<AID AltID="XX" AltIDSrc="8"/>  
+<Evnt EventTyp="25" Dt="YYYY -MM-DD"/> 
+<CmplxEvnt Typ="3" Px=”4” /> 
+</Instrmt> 
+<PosUnd> 
+<Undly ID="31" Src="H" MMY="201705"/> 
+</PosUnd>  
+<Qty Typ="FIN" Long="10" Short="20 "/> 
+<Qty Typ="TOT" Long="10" Short="20 "/> 
+<Qty Typ="EO" Long="40" Short="30 "/> 
+</PosRpt>  
+ 
+<PosRpt RptID="17" BizDt="2017-02-13" Actn="1" > 
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  98 of 113  
+ <Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100" Src="D" R="89"/> 
+<Pty ID="100" Src="N" R="89"/> 
+<Instrmt ID="31" Src="H" MMY="201705" StrkPx="0.52" PutCall="0" Exch="XCBT"> 
+<AID AltID="XX" AltIDSrc="8"/>  
+</Instrmt>  
+<PosUnd> 
+<Undly ID="31" Src="H" MMY="201705"/> 
+</PosUnd>  
+            </PosRpt>  
+Commodity  Futures  Trading  
+ Guidebook  for Part  17 
+Division of Data  
+ 
+Page  99 of 113  
+  
+ 
+  
+Message 
+Container 
+Close  </Batch>  
+</FIXML > 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  100 of 113  
+  
+ 
+Appendix  D: 80-Byte Format  Comparison to FIXML  
+ 
+ 
+These  sample  reports  portray  end- of-day positions,  exchange  for physicals  and delivery  notices  reported  by a large  trader, ZZZ, at close  of business  
+on 3 March 2016 for two accounts with June 2016 Soybean Futures and September 2016 Soybean Option on Futures positions using CME a s the 
+exchange.  
+ 
+Sample  Data  in 80-Byte  
+Format  
+RPZZZ 00000000100C2016030102 S  201606 0000000 00001650000000  A 
+RPZZZ 00000000100C2016030102PSU 201609150000900A00001000000000S  201609 A EPZZZ 
+00000000100C2016030102 S   201606 0000000 00000000000100  A 
+DNZZZ 00000000100C2016030102 S   201606 0000000 00001000000000  A 
+RPZZZ 00000000100H2016030102 S 201606 0000165 00000000000000 A 
+RPZZZ 00000000100H2016030102CSU 201609150000900A00000000000100S  201609 A EPZZZ 
+00000000100H2016030102 S   201606 0000000 00001000000000  A 
+DNZZZ 00000000100H2016030102 S   201606 0000000 00001000000000  A 
+ 
+ 
+  
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  101 of 113  
+  
+ 
+    
+ 
+   
+ 
+  
+Sample  Data  in FIXML  PosRpt  
+Format  
+<?xml  version="1.0"  encoding="UTF -8"?>  
+<!--Sample  XML  ﬁle generated  by XMLSpy  v2014  rel. 2 sp1 (x64) (http://www.altova.com) --> 
+< FIXML  xmlns ="http://www.fixprotocol.org/FIXML -Latest "> 
+<Batch  TotMsg ="4"> 
+<Hdr MsgTyp ="AP" SID="ZZZ" TID="CFTC " Snt="2016- 03-02T09:30:47Z " /> 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  102 of 113  
+ <PosRpt  RptID ="1" Actn ="1" BizDt ="2016 -03-01" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100C " Src="D" R="89"/> 
+<Instrmt ID="S" Src="H" SecTyp=" FUT" MMY ="201606"  Exch ="XCME " /> 
+<Qty Typ="FIN" Long ="165" Short ="0"/> 
+<Qty Typ="TOT" Long ="165" Short ="0"/> 
+<Qty Typ="EP" Long ="0" Short ="100"/>  
+<Qty Typ="DN" Long ="100" Short ="0"/> 
+</PosRpt > 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  103 of 113  
+  
+ 
+<PosRpt  RptID ="2" Actn ="1" BizDt ="2016 -03-01" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100C " Src="D" R="89"/> 
+<Instrmt ID="SU" Src="H" SecTyp=" OOF " MMY ="20160615 " StrkPx=" 9.00 " PutCall=" 0" Exch ="XCME " /> 
+<PosUnd > 
+<Undly ID="S" MMY ="201606 "" /> 
+</PosUnd > 
+<Qty Typ="FIN" Long ="100" Short ="0"/> 
+<Qty Typ="TOT" Long ="165" Short ="0"/> 
+</PosRpt > 
+<PosRpt  RptID ="3" Actn ="1" BizDt ="2016 -03-01" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100H " Src="D" R="89"/> 
+<Instrmt ID="S" Src="H" SecTyp=" FUT" MMY ="201606" Exch ="XCME " /> 
+<Qty Typ="FIN" Long ="0" Short ="165"/>  
+<Qty Typ="TOT" Long ="165" Short ="0"/> 
+<Qty Typ="EP" Long ="100" Short ="0"/> 
+<Qty Typ="DN" Long ="0" Short ="100"/> 
+</PosRpt > 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  104 of 113  
+ <PosRpt  RptID ="4" Actn ="1" BizDt ="2016 -03-01" > 
+<Pty ID="ZZZ" Src="M" R="116"/> 
+<Pty ID="100H " Src="D" R="89"/> 
+<Instrmt ID="SU" Src="H" SecTyp=" OOF " MMY ="2016 -06-15" StrkPx=" 9.00" PutCall ="1" Exch ="XCME " /> 
+<PosUnd > 
+<Undly ID="S" MMY ="201606 " /> 
+</PosUnd > 
+<Qty Typ="FIN" Long ="0" Short ="100"/>  
+<Qty Typ="TOT" Long ="165" Short ="0"/> 
+</PosRpt > 
+</Batch > 
+</FIXML > 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  105 of 113  
+  
+Appendix  E Legacy  File Format  
+ 
+ 
+The legacy  ﬁle format  is the current  Large  Trader  80 byte  format,  which is to be converted  to FIXML.  Once  converted  to FIXML,  the 80 byte  format  will 
+become obsolete. This information is relevant to the transition only.  
+Except  as otherwise  approved  by the Commission  or its designee,  all required  records  shall be submitted  together  in a single ﬁle.  Each  record  will be 
+80 characters long. The speciﬁc record format is shown in the table below, where “AN” = alphanumeric, “S” = signed numeric, and “N” = numeric.  
+ 
+Beginning  
+Column   
+Length   
+Type   
+Name   
+Position  
+1 2 AN Report  Type  1-2 
+3 3 AN Reporting  Firm  3-5 
+6 2 - Reserved  6-7 
+8 12 AN Account  Number  8-19 
+20 8 AN Report  Date  20-27 
+28 2 AN Exchange  Code  28-29 
+30 1 AN Put or Call 30 
+31 5 AN Commodity  Code  (1) 31-35 
+36 8 AN Expiration  Date  (1) 36-43 
+44 7 S Strike  Price  44-50 
+51 1 AN Exercise  Style  51 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  106 of 113  
+ 52 7 N Long -Buy-Stopped  52-58 
+59 7 N Short -Sell-Issued  59-65 
+66 5 AN Commodity  Code  (2) 66-70 
+71 8 AN Expiration  Date  (2) 71-78 
+79 1 - Reserved  79 
+80 1 AN Record  Type  80 
+ 
+  
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  107 of 113  
+  
+1. Report type . This report  format  will be used  to report  three  types  of data:  long  and short  futures  and options  positions,  futures  delivery 
+notices  issued and stopped, and exchanges of futures for a commodity or for a derivatives position bought and sold. Valid values for the 
+report type are “RP” for  
+reporting  positions,  “DN”  for reporting  notices,  and “EP” for reporting  exchanges  of futures  for a commodity  or for a derivatives  position.  
+2. Reporting  ﬁrm . The clearing  member number  assigned  by an exchange  or clearing  house  to identify  reporting  ﬁrms.  If a ﬁrm is not a 
+clearing member,  a three -character alpha- numeric identiﬁer assigned by the Commission.  
+3. Account  Number.  A unique  identiﬁer assigned  by the reporting  ﬁrm to each  special  account.  The ﬁeld  is zero  ﬁlled  with  the account  
+number  right - justiﬁed. Assignment of the account number is subject to the provisions of paragraph (b) of this section and appendix A 
+of this part (Form 102).  
+4. Report date . The format  is YYYYMMDD,  where  YYYY is the year,  MM is the month, and DD is the day of the month.  
+5. Exchange . This is a two-character  ﬁeld  approved by the Commission  to identify  the exchange  on which a position  is held.  
+6. Put or Call. Valid  values  for this ﬁeld  are “C” for a call option  and “P” for a put option. For futures, the ﬁeld  is blank.  
+7. Commodity  (1). An exchange -assigned  commodity  code  for the futures  or options  contract.  This is the human readable  ticker  value.  
+8. Expiration  date  (1). The date  format  is YYYYMMDD  and represents  the expiration  date  or delivery  date  of the reported  futures  or options  
+contract. For date -speciﬁc instruments such as ﬂexible products, the full date must be reported. For other options and futures, this ﬁeld is 
+used to report the expiration year and month for an options contract or a delivery year and month for a futures contract. The day portion 
+of the ﬁeld for these contracts contains spaces.  
+9. Strike  price . This is a signed  numeric  ﬁeld  for reporting  options  strike  prices.  The strike  prices  should be right -justiﬁed  and the ﬁeld  zero -
+ﬁlled.  Strike prices must be reported in the same formats that are used by an exchange. For futures, the ﬁeld is left blank.  
+ 
+Right  Most Character  Value  Sign 
+0 through  9 0 through  9 + 
+{ 0 + 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  108 of 113  
+ Right  Most Character  Value  Sign 
+A 1 + 
+B 2 + 
+C 3 + 
+D 4 + 
+E 5 + 
+F 6 + 
+G 7 + 
+H 8 + 
+I 9 + 
+ 
+Right  Most Character  Value  Sign 
+} 0 - 
+J 1 - 
+K 2 - 
+L 3 - 
+M 4 - 
+N 5 - 
+O 6 - 
+P 7 - 
+Q 8 - 
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  109 of 113  
+ Right  Most Character  Value  Sign 
+R 9 - 
+ 
+ 
+10. Exercise  style . Valid  values  for this ﬁeld  are “A” for American  style  options,  i.e., those  that can be exercised  at any time  during  the life of the 
+options;  and “E” for European, i.e., those that can be exercised only at the end of an option's life. This ﬁeld is required only for ﬂexible 
+instruments or as otherwise speciﬁed by the Commission.  
+11. Long -Buy-Stopped (Short -Sell-Issued). When report  type  is “RP”,  report  long  (short)  positions  open  at the end of a trading  day. When report  is 
+“DN”,  
+report delivery notices stopped (issued) on behalf of the account. When report type is “EP”, report purchases (sales) of futures for a 
+commodity or for a derivatives  position  for the account.  Report  all information  in contracts.  Position  data  are reported  on a net or gross  basis in  
+accordance  with paragraphs  
+(d) and (e) of this section.  
+12. Commodity  (2). The exchange  assigned  commodity  code  for a futures  contract  or other  instrument that a position  is exercised  into from  a 
+date -speciﬁc or ﬂexible option. This is the human readable Options Futures underlying ticker value.  
+13. Expiration  date  (2). Similar to other  dates,  the format  is YYYYMMDD and represents  the expiration  date  or delivery  month  and year  of 
+the future  or other instrument that a position is exercised into from a date -speciﬁc or ﬂexible option.  
+14. Record  type  (1). Record  type  is used  to correct  errors  or delete  records  that have  previously  been  submitted.  Valid  values  are “A”, “C ”, “D” or 
+“blank”.  
+An A or “blank”  is used  in this ﬁeld  for all new  records.  If the record corrects  information  for a previously  provided  record,  this ﬁeld  must  
+contain  a “C” or “blank”  and the record must contain all information on the previously transmitted record. If the record deletes information on 
+a previously provided  
+record,  thi s  ﬁeld  must  contain  a “D” and all information  on the previously  transmitted  record.   
+Commodity Futures Trading Commission  
+Division of Data                        Guidebook for Part 17  
+ 
+  Page 110 of 113 
+Appendix  F: Map Part 17 Large  Trader Data to FIXML  
+ 
+ 
+The legacy  80 byte  Large  Trader  Position  Reports  should be mapped to the FIXML  standard  as follows.  The ﬁrst column  is the Legacy  80 Byte  Large  
+Trader  ﬁeld  name.  The four additional columns list the FIXML equivalent for the resulting XML Xpath, the FIXML tag #, the valid FIXML values, and the 
+name of the FIXML ﬁeld name.  
+ 
+ 
+Item  Legacy Field 
+Name  FIXML  FIX 
+Tag  Valid Values  FIXML Data 
+Element(s)  
+1 Report Type  FIXML/Batch/PosRpt/Qty@Typ  703  FIN = End -of-Day position  
+TOT=Total Contracts for Day  
+EP = Exchange for Physical  
+DN = Delivery Notice 
+ES = Exchange for Swaps  
+EO = Exchange for Options 
+Note: Exchange for Swaps 
+and Exchange for Options are 
+added in order to align with 
+Part 16.  Position 
+Type  
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  111 of 113  
+ Item  Legacy Field 
+Name  FIXML  FIX 
+Tag  Valid Values  FIXML Data 
+Element(s)  
+2 Reporting Firm  FIXML/Batch/PosRpt/Pty@ID=[Rpt Firm ID] 
+FIXML/Batch/PosRpt/Pty@Src=M (CFTC Reporting Firm Identiﬁer)  
+FIXML/Batch/PosRpt/Pty@R=116 (Reporting Entity)  448 
+447 
+452 CFTC assigned Reporting ﬁrm identiﬁer 
+@ID=Rpt Firm ID  
+@Sc="M" @R="116" Party ID  
+Party ID Source Party Role  
+ 
+3 Account 
+Number  FIXML/Batch/PosRpt/Pty@ID=[Form 102 Large trader Identiﬁer]  
+FIXML/Batch/PosRpt/Pty@Src=D (Proprietary/Custom)  
+FIXML/Batch/PosRpt/Pty@R=89 (Large Position Reporting 
+Account)  448 
+447 
+452 Proprietary/Custom Reporting entity 
+assigned identiﬁer @Src=”D”  
+@R="89"  
+@ID=Large trader Identiﬁer  Party ID  
+Party ID Source 
+Party Role  
+4 Report Date  FIXML/Batch/PosRpt@BizDt[YYYY -MM-DD] 715 FIXML YYYY -MM -DD date format. See 
+Data Dictionary for further information.  Clearing 
+Business Date  
+5 Exchange Code  FIXML/Batch/PosRpt/Instrmt@Exch  207 See  
+https://www.iso20022.org/10383/iso -
+10383 -market -identifier -codes  
+for valid exchange code values.  Exchange Code  
+6 Put or Call  FIXML/Batch/PosRpt/Instrmt@PutCall  201 0 = Put  
+1 = Call  Option Type  
+7 Commodity 
+Code (1)  FIXML/Batch/PosRpt/ Instrmt@Sym=[Commodity Code]  55 This value should match the code 
+formerly used as the commodity code 
+in the 80 -byte report format.  Commodity ID 
+(Legacy)  
+8 Expiration Date 
+(1) FIXML/Batch/PosRpt/Instrmt@MMY= [ YYYYMMDD or YYYYMM]  200 
+541 FIXML YYYYMMDD  or YYYYMM  date 
+format. See Data Dictionary for further information.  Contract Date   
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  112 of 113  
+ Item  Legacy Field 
+Name  FIXML  FIX 
+Tag  Valid Values  FIXML Data 
+Element(s)  
+9 Strike Price  FIXML/Batch/PosRpt/Instrmt@StrkPx  202 Decimal /(28,10)  Strike Price  
+10 Exercise Style  FIXML/Batch/PosRpt/Instrmt@ExerStyle  1194  0=European 1=American 2=Bermuda 
+99= Other  Option 
+Expiration Type  
+11 Long -Buy-
+Stopped or 
+Short -Sell-
+Issued  FIXML/Batch/PosRpt/Qty@Long Or 
+FIXML/Batch/PosRpt/Qty@Short  704 
+705 Int (value can be no larger than 
+2,147,483,647)  Long Quantity Or 
+Short Quantity  
+12 Commodity 
+Code (2)  FIXML/Batch/PosRpt/PosUnd/Undly@ID =[Commodity Code]  309 This value should match the code 
+formerly used as the commodity code 
+in the 80 -byte report format for option 
+underlying commodity code. Settlement 
+Instrument – 
+Product Code  
+(Legacy)  
+13 Expiration Date 
+(2) FIXML/Batch/PosRpt/PosUnd/Undly@MMY =[YYYYMM]  313 FIXML required date format. See Data 
+Dictionary for further information. Settlement 
+Instrument - 
+Contract Date  
+Commodity  Futures  Trading  
+ Guidebook  for Part 17 
+Division of Data  
+ 
+Page  113 of 113  
+ Item  Legacy Field 
+Name  FIXML  FIX 
+Tag  Valid Values  FIXML Data 
+Element(s)  
+14 Record Type  FIXML/Batch/PosRpt@Actn  2364  1 = New - used to increment the 
+overall transaction quantity  
+2 = Change - used to override the 
+overall transaction quantity or speciﬁc 
+add messages based on the FIXML Reference ID (Primary Key)  
+3 = Delete - The FIXML Reference ID 
+(Primary Key) is used to completely 
+back -out (Delete) the transaction. Position Report 
+Action  
+ 
+See the data  dictionary  tables  for further  mapping  guidance.  
+ 
